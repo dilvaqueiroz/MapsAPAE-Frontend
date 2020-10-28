@@ -21,6 +21,10 @@ export default function CreateUsuario() {
   const [about,setAbout]=useState('');
   const [instructions,setInstructions]=useState('');
   const [opening_hours,setOpeningHours]=useState('');
+  const [cep,setCep]=useState('');
+  const [street,setStreet]=useState('');
+  const [number,setNumber]=useState('');
+  const [district,setDistrict]=useState('');
   const [open_on_weekends,setOpenOnWeekends]=useState(true);
   const [images,setImages] = useState<File[]>([]);
   const [previewImages,setPreviewImages] = useState<string[]>([]);
@@ -49,6 +53,13 @@ export default function CreateUsuario() {
     setPreviewImages(selectedImagesPreview);
   }
 
+
+  function mCEP(cep:string) {
+    cep = cep.replace(/\D/g,"")
+    cep = cep.replace(/(\d{3})(\d{1,3})$/,"$1-$2")
+    return cep
+  }
+
   async function handleSubmit(event:FormEvent){
     event.preventDefault();
 
@@ -58,6 +69,10 @@ export default function CreateUsuario() {
 
     data.append('name',name);
     data.append('about',about);
+    data.append('cep',cep);
+    data.append('street',street);
+    data.append('number',number);
+    data.append('district',district);
     data.append('latitude',String(latitude));
     data.append('longitude',String(longitude));
     data.append('instructions',instructions);
@@ -130,7 +145,53 @@ export default function CreateUsuario() {
             </div>
 
             <div className="input-block">
-              <label htmlFor="about">Referências -Apelidos/Proximo à:<span>Máximo de 300 caracteres</span></label>
+              <label htmlFor="cep">CEP:</label>
+              <input 
+                id="cep"
+                value={cep}
+                maxLength={9}
+                onChange={event => setCep(mCEP(event.target.value))}
+                />
+                {console.log(mCEP(cep))}
+            </div>
+
+            <div className="input-block">
+              <label htmlFor="street">Rua:</label>
+              <input
+                id="street"
+                value={street}
+                maxLength={100}
+                disabled={true}
+                onChange={event => setStreet(event.target.value)}
+                />
+
+            </div>
+
+            <div className="input-block">
+              <label htmlFor="number">Número:</label>
+              <input 
+                id="number"
+                value={number}
+                maxLength={4}
+                onChange={event => setNumber(event.target.value)}
+                />
+
+            </div>
+
+            <div className="input-block">
+              <label htmlFor="district">Bairro:</label>
+              <input 
+                id="district"
+                value={district}
+                maxLength={50}
+                onChange={event => setDistrict(event.target.value)}
+                />
+
+            </div>
+
+
+            <div className="input-block">
+              <label htmlFor="about">Complemento:</label>
               <textarea 
                 id="name"
                 maxLength={300}
@@ -139,6 +200,7 @@ export default function CreateUsuario() {
               />
             </div>
 
+                
             <div className="input-block">
               <label htmlFor="images">Fotos</label>
 
