@@ -69,7 +69,7 @@ function UsuarioMap(){
                   
             </Map>
 
-            <Link to="/usuarios/create" className="create-usuario">
+            <Link to="/selection" className="create-usuario">
                 <FiPlus size={32} color= "#fff"/>
             </Link>
         </div>

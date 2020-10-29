@@ -14,6 +14,10 @@ interface Usuario{
   latitude:number;
   longitude:number;
   name:string;
+  cep:string;
+  street: string;
+  number:string;
+  district:string;
   about:string;
   instructions:string;
   opening_hours:string;
@@ -73,7 +77,11 @@ if(!usuario){
           
           <div className="usuario-details-content">
             <h1>{usuario.name}</h1>
+            <p>{usuario.district}</p>
+            <p>{usuario.street}</p>
+            <p>{usuario.number}</p>
             <p>{usuario.about}</p>
+            
 
             <div className="map-container">
               <Map 

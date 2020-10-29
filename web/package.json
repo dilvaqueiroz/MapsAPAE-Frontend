@@ -13,6 +13,7 @@
     "@types/react-leaflet": "^2.5.2",
     "@types/react-router-dom": "^5.1.6",
     "axios": "^0.20.0",
+    "bootstrap": "^4.5.3",
     "leaflet": "^1.7.1",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",

@@ -68,11 +68,11 @@ export default function CreateUsuario() {
     const data = new FormData();
 
     data.append('name',name);
-    data.append('about',about);
     data.append('cep',cep);
     data.append('street',street);
     data.append('number',number);
     data.append('district',district);
+    data.append('about',about);
     data.append('latitude',String(latitude));
     data.append('longitude',String(longitude));
     data.append('instructions',instructions);

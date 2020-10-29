@@ -21,7 +21,7 @@
   
     border: 0;
   
-    background: #12AFCB;
+    background: #15c3d6;
     border-radius: 16px;
   
     cursor: pointer;
@@ -35,5 +35,5 @@
   
    aside .app-sidebar footer a:hover,
    aside .app-sidebar footer button:hover {
-    background: #17D6EB;
+    background: #96feff;
   }
