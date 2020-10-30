@@ -1,8 +1,8 @@
 import {Entity, Column, PrimaryGeneratedColumn, OneToMany , JoinColumn} from 'typeorm';
 import Image from './ImageUsuario';
 
-@Entity('usuarios')
-export default class Usuario{
+@Entity('doadores')
+export default class Doador{
     @PrimaryGeneratedColumn('increment')
     id:number;
 
@@ -17,9 +17,9 @@ export default class Usuario{
 
     @Column()
     cep:string;
-    
+
     @Column()
-    street: string;
+    street:string;
 
     @Column()
     number:string;
@@ -31,9 +31,6 @@ export default class Usuario{
     about:string;
 
     @Column()
-    instructions:string;
-
-    @Column()
     opening_hours:string;
 
     @Column()
@@ -42,6 +39,6 @@ export default class Usuario{
     @OneToMany(()=> Image, image => image.usuario, {
         cascade:['insert','update']
     })
-    @JoinColumn({name: 'usuario_id'})
+    @JoinColumn({name: 'doador_id'})
     images: Image[];
 }

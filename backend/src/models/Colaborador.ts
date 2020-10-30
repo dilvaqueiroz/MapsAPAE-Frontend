@@ -2,7 +2,7 @@ import {Entity, Column, PrimaryGeneratedColumn, OneToMany , JoinColumn} from 'ty
 import Image from './ImageUsuario';
 
 @Entity('usuarios')
-export default class Usuario{
+export default class Colaborador{
     @PrimaryGeneratedColumn('increment')
     id:number;
 
@@ -42,6 +42,6 @@ export default class Usuario{
     @OneToMany(()=> Image, image => image.usuario, {
         cascade:['insert','update']
     })
-    @JoinColumn({name: 'usuario_id'})
+    @JoinColumn({name: 'colaborador_id'})
     images: Image[];
 }

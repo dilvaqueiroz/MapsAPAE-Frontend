@@ -1,10 +1,10 @@
 import {MigrationInterface, QueryRunner,Table} from "typeorm";
 
-export class createUsuarios1603394047284 implements MigrationInterface {
+export class createDoadores1604025788710 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable( new Table({
-            name:'usuarios',
+            name:'doadores',
             columns: [
                 {
                   name:'id',
@@ -31,11 +31,24 @@ export class createUsuarios1603394047284 implements MigrationInterface {
                     precision:2,
                 },
                 {
-                    name:'about',
+                    name:'cep',
+                    type:'text',
+
+                },
+                {
+                    name:'street',
                     type:'text',
                 },
                 {
-                    name:'instructions',
+                    name:'number',
+                    type:'text',
+                },
+                {
+                    name:'district',
+                    type:'text',
+                },
+                {
+                    name:'about',
                     type:'text',
                 },
                 {
@@ -49,12 +62,13 @@ export class createUsuarios1603394047284 implements MigrationInterface {
                 },
             ],
         }))
-    
+        //realizar alterações
+        //criar tabela, criar campo, deletar campo
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable('usuarios');
-    
+        await queryRunner.dropTable('doadores');
+        //desfazer o q foi feito no up
     }
 
 }

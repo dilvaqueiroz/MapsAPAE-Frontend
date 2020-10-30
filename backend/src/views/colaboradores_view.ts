@@ -1,0 +1,21 @@
+import Colaborador from '../models/Colaborador';
+import imagesView from './images_view';
+
+export default{
+    render(colaborador: Colaborador){
+        return{
+            id:colaborador.id,
+            name:colaborador.name,
+	        latitude:colaborador.latitude,
+	        longitude:colaborador.longitude,
+	        about:colaborador.about,
+	        opening_hours:colaborador.opening_hours,
+            open_on_weekends:colaborador.open_on_weekends,
+            images: imagesView.renderMany(colaborador.images)
+        };
+    },
+
+    renderMany(colaboradores: Colaborador[]){
+        return colaboradores.map(colaborador=> this.render(colaborador));
+    }
+};

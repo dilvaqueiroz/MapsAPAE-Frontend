@@ -2,7 +2,7 @@ import {Entity, Column, PrimaryGeneratedColumn , ManyToOne, JoinColumn} from 'ty
 import Usuario from './Usuario';
 
 @Entity('images')
-export default class Image{
+export default class ImageUsuario{
     @PrimaryGeneratedColumn('increment')
     id:number;
 
