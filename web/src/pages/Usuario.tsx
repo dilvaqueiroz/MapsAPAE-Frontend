@@ -5,7 +5,7 @@ import {useParams} from 'react-router-dom';
 
 import '../styles/pages/usuario.css';
 import Sidebar from "../components/Sidebar";
-import mapIcon from "../utils/mapIcon";
+import mapIconUsuario from "../utils/mapIconUsuario";
 import { useEffect } from "react";
 import { useState } from "react";
 import api from "../services/api";
@@ -97,7 +97,7 @@ if(!usuario){
                 <TileLayer 
                   url={`https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
                 />
-                <Marker interactive={false} icon={mapIcon} position={[usuario.latitude,usuario.longitude]} />
+                <Marker interactive={false} icon={mapIconUsuario} position={[usuario.latitude,usuario.longitude]} />
               </Map>
 
               <footer>

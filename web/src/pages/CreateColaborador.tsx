@@ -7,10 +7,11 @@ import {FiPlus } from "react-icons/fi";
 
 
 import Sidebar from "../components/Sidebar";
-import mapIcon from "../utils/mapIcon";
+import mapIconUsuario from "../utils/mapIconUsuario";
 import api from "../services/api";
 
 import '../styles/pages/create-usuario.css';
+import mapIconColaborador from "../utils/mapIconColaborador";
 
 export default function CreateColaborador(){
 
@@ -105,7 +106,7 @@ export default function CreateColaborador(){
       <main>
         <form onSubmit={handleSubmit} className="create-usuario-form">
           <fieldset>
-            <legend>Dados</legend>
+            <legend>Dados do Colaborador</legend>
 
             <Map 
               center={[-7.9933402,-38.3008299]} 
@@ -121,7 +122,7 @@ export default function CreateColaborador(){
             
             <Marker 
               interactive={false} 
-              icon={mapIcon} 
+              icon={mapIconColaborador} 
               position={[
                 position.latitude,
                 position.longitude
@@ -152,6 +153,18 @@ export default function CreateColaborador(){
                 {console.log(mCEP(cep))}
             </div>
 
+
+            <div className="input-block">
+              <label htmlFor="district">Bairro:</label>
+              <input 
+                id="district"
+                value={district}
+                maxLength={50}
+                onChange={event => setDistrict(event.target.value)}
+                />
+
+            </div>
+
             <div className="input-block">
               <label htmlFor="street">Rua:</label>
               <input
@@ -171,17 +184,6 @@ export default function CreateColaborador(){
                 value={number}
                 maxLength={4}
                 onChange={event => setNumber(event.target.value)}
-                />
-
-            </div>
-
-            <div className="input-block">
-              <label htmlFor="district">Bairro:</label>
-              <input 
-                id="district"
-                value={district}
-                maxLength={50}
-                onChange={event => setDistrict(event.target.value)}
                 />
 
             </div>

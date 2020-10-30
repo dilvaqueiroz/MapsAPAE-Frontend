@@ -7,7 +7,7 @@ import {FiPlus } from "react-icons/fi";
 
 
 import Sidebar from "../components/Sidebar";
-import mapIcon from "../utils/mapIcon";
+import mapIconUsuario from "../utils/mapIconUsuario";
 import api from "../services/api";
 
 import '../styles/pages/create-usuario.css';
@@ -108,7 +108,7 @@ export default function CreateUsuario() {
       <main>
         <form onSubmit={handleSubmit} className="create-usuario-form">
           <fieldset>
-            <legend>Dados</legend>
+            <legend>Dados do Usuário</legend>
 
             <Map 
               center={[-7.9933402,-38.3008299]} 
@@ -124,7 +124,7 @@ export default function CreateUsuario() {
             
             <Marker 
               interactive={false} 
-              icon={mapIcon} 
+              icon={mapIconUsuario} 
               position={[
                 position.latitude,
                 position.longitude
@@ -156,6 +156,17 @@ export default function CreateUsuario() {
             </div>
 
             <div className="input-block">
+              <label htmlFor="district">Bairro:</label>
+              <input 
+                id="district"
+                value={district}
+                maxLength={50}
+                onChange={event => setDistrict(event.target.value)}
+                />
+
+            </div>
+
+            <div className="input-block">
               <label htmlFor="street">Rua:</label>
               <input
                 id="street"
@@ -177,18 +188,6 @@ export default function CreateUsuario() {
                 />
 
             </div>
-
-            <div className="input-block">
-              <label htmlFor="district">Bairro:</label>
-              <input 
-                id="district"
-                value={district}
-                maxLength={50}
-                onChange={event => setDistrict(event.target.value)}
-                />
-
-            </div>
-
 
             <div className="input-block">
               <label htmlFor="about">Complemento:</label>

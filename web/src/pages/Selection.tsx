@@ -17,13 +17,14 @@ export default function Selection() {
                   
                             
               <div className="usuario-details-content">
-    
+              
                 <h2>Deseja Cadastrar</h2>
+                <hr/>
                     
                 <div className="open-details flex">
                   <div  >
                    <Link to="/usuarios/create" className="config-button">
-                       Usuario
+                       Usuário
                    </Link>
                   </div>
                    <div  >

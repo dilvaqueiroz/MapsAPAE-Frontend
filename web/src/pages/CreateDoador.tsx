@@ -7,7 +7,7 @@ import {FiPlus } from "react-icons/fi";
 
 
 import Sidebar from "../components/Sidebar";
-import mapIcon from "../utils/mapIcon";
+import mapIconDoador from "../utils/mapIconDoador";
 import api from "../services/api";
 
 import '../styles/pages/create-usuario.css';
@@ -105,7 +105,7 @@ export default function CreateDoador(){
       <main>
         <form onSubmit={handleSubmit} className="create-usuario-form">
           <fieldset>
-            <legend>Dados</legend>
+            <legend>Dados do Doador</legend>
 
             <Map 
               center={[-7.9933402,-38.3008299]} 
@@ -121,7 +121,7 @@ export default function CreateDoador(){
             
             <Marker 
               interactive={false} 
-              icon={mapIcon} 
+              icon={mapIconDoador} 
               position={[
                 position.latitude,
                 position.longitude
@@ -152,6 +152,18 @@ export default function CreateDoador(){
                 {console.log(mCEP(cep))}
             </div>
 
+            
+            <div className="input-block">
+              <label htmlFor="district">Bairro:</label>
+              <input 
+                id="district"
+                value={district}
+                maxLength={50}
+                onChange={event => setDistrict(event.target.value)}
+                />
+
+            </div>
+
             <div className="input-block">
               <label htmlFor="street">Rua:</label>
               <input
@@ -171,17 +183,6 @@ export default function CreateDoador(){
                 value={number}
                 maxLength={4}
                 onChange={event => setNumber(event.target.value)}
-                />
-
-            </div>
-
-            <div className="input-block">
-              <label htmlFor="district">Bairro:</label>
-              <input 
-                id="district"
-                value={district}
-                maxLength={50}
-                onChange={event => setDistrict(event.target.value)}
                 />
 
             </div>

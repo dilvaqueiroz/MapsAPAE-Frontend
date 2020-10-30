@@ -6,7 +6,7 @@ import {Map,TileLayer,Marker,Popup} from 'react-leaflet';
 import mapMakerImg from '../images/logo.png';
 
 import '../styles/pages/usuario-map.css';
-import mapIcon from '../utils/mapIcon';
+import mapIcon from '../utils/mapIconUsuario';
 import api from '../services/api';
 
 interface Usuario{
