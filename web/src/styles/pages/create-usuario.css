@@ -211,3 +211,31 @@ form.create-usuario-form button.confirm-button svg {
 form.create-usuario-form button.confirm-button:hover {
   background: #36CF82;
 }
+
+#button-c{
+
+  font-weight: bold;
+	padding: 10px;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-bottom-style: solid;
+	border-top-color: #15c3d6;
+	border-right-color: #15c3d6;
+	border-bottom-color: #15c3d6;
+	border-left-color:#15c3d6;
+	color: #15c3d6;
+  margin-top: 20px;
+  border-radius: 10px 10px 10px 10px;
+  
+}
+
+#button-c:hover{
+
+  color:  #FFFFFF;
+	background-color: #15c3d6;
+	border-radius: 10px 10px 10px 10px;
+}
+
+

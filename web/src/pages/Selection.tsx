@@ -20,7 +20,6 @@ export default function Selection() {
               
                 <h2>Deseja Cadastrar</h2>
                 <hr/>
-                    
                 <div className="open-details flex">
                   <div  >
                    <Link to="/usuarios/create" className="config-button">

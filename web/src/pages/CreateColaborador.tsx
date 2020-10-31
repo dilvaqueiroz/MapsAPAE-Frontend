@@ -8,7 +8,6 @@ import {FiPlus } from "react-icons/fi";
 
 
 import Sidebar from "../components/Sidebar";
-import mapIconUsuario from "../utils/mapIconUsuario";
 import api from "../services/api";
 
 import '../styles/pages/create-usuario.css';
@@ -186,8 +185,8 @@ export default function CreateColaborador(){
 
             <div className="input-block">
               <button
-                type="button" onClick={() => getCep()}>
-                Busca CEP
+                type="button" id="button-c" onClick={() => getCep()}>
+                Resgatar Endereço
               </button>
             </div>
 
@@ -237,7 +236,7 @@ export default function CreateColaborador(){
             </div>
 
             <div className="input-block">
-              <button type="button" onClick={() => getGeolocalization()}>
+              <button type="button" id="button-c" onClick={() => getGeolocalization()}>
                 Selecione a Localização Geográfica
               </button>
             </div>
