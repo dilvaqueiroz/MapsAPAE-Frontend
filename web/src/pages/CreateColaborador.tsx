@@ -87,6 +87,8 @@ export default function CreateColaborador(){
 
     history.push('/app');
 
+    //alteração teste
+
   /*  console.log({
       position,
       name,
