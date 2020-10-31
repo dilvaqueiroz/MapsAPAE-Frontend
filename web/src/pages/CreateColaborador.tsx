@@ -2,6 +2,7 @@ import React, { FormEvent, useState, ChangeEvent } from "react";
 import { Map,Marker,TileLayer } from 'react-leaflet';
 import {LeafletMouseEvent} from 'leaflet';
 import { useHistory } from "react-router-dom";
+import { Alert } from 'reactstrap'
 
 import {FiPlus } from "react-icons/fi";
 
@@ -24,6 +25,9 @@ export default function CreateColaborador(){
   const [street,setStreet]=useState('');
   const [number,setNumber]=useState('');
   const [district,setDistrict]=useState('');
+  const [error, setError] = useState('');
+  const [visible, setVisible] = useState(false);
+  const [mapVisible, setmapVisible] = useState(false);
   const [open_on_weekends,setOpenOnWeekends]=useState(true);
   const [images,setImages] = useState<File[]>([]);
   const [previewImages,setPreviewImages] = useState<string[]>([]);
@@ -52,11 +56,54 @@ export default function CreateColaborador(){
     setPreviewImages(selectedImagesPreview);
   }
 
-
+  // máscara para aceitar apenas números e colocar hífen no cep
   function mCEP(cep:string) {
     cep = cep.replace(/\D/g,"")
     cep = cep.replace(/(\d{3})(\d{1,3})$/,"$1-$2")
     return cep
+  }
+
+    // tempo de aparição do erro
+    function alertRegister() {
+
+      setVisible(true)
+  
+      window.setTimeout(() => {
+        setVisible(false)
+      }, 2000)
+    }
+
+  // pega o cep através da api viacep
+  function getCep() {
+    setError('')
+
+    fetch(`https://viacep.com.br/ws/${cep}/json/`)
+      .then((response) => response.json())
+      .then(resp => {
+        setCep(resp.cep)
+        setStreet(resp.logradouro)
+        setDistrict(resp.bairro)
+      })
+      .catch(() => {
+        setError('CEP inválido!')
+        alertRegister()
+      })
+
+  }
+
+  // retorna as informações do endereço como também a latitude e longitude
+  function getGeolocalization() {
+
+    if (street) {
+      let street1 = street.split(" ").join("+")
+      fetch(`https://nominatim.openstreetmap.org/search?country=Brazil&city=Serra%20Talhada&street=${street1}&limit=1&format=json`)
+        .then((res) => res.json())
+        .then((response) => setPosition({
+          latitude: response[0].lat,
+          longitude: response[0].lon
+        }))
+      setmapVisible(true)
+    }
   }
 
   async function handleSubmit(event:FormEvent){
@@ -110,30 +157,6 @@ export default function CreateColaborador(){
           <fieldset>
             <legend>Dados do Colaborador</legend>
 
-            <Map 
-              center={[-7.9933402,-38.3008299]} 
-              style={{ width: '100%', height: 280 }}
-              zoom={15}
-              onclick={handleMapClick}
-            >
-              <TileLayer 
-                url={`https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
-              />
-
-            { position.latitude != 0 && (
-            
-            <Marker 
-              interactive={false} 
-              icon={mapIconColaborador} 
-              position={[
-                position.latitude,
-                position.longitude
-                  ]} 
-                />
-              )}
-
-            </Map>
-
             <div className="input-block">
               <label htmlFor="name">Nome do Colaborador</label>
               <input 
@@ -143,6 +166,12 @@ export default function CreateColaborador(){
                 />
 
             </div>
+
+            {error !== '' ?
+              <div className="input-block">
+                <Alert severity="error" color="danger" isOpen={visible}>{error}</Alert>
+              </div> : null
+            }
 
             <div className="input-block">
               <label htmlFor="cep">CEP:</label>
@@ -155,6 +184,12 @@ export default function CreateColaborador(){
                 {console.log(mCEP(cep))}
             </div>
 
+            <div className="input-block">
+              <button
+                type="button" onClick={() => getCep()}>
+                Busca CEP
+              </button>
+            </div>
 
             <div className="input-block">
               <label htmlFor="district">Bairro:</label>
@@ -200,6 +235,41 @@ export default function CreateColaborador(){
                 onChange={event => setAbout(event.target.value)}
               />
             </div>
+
+            <div className="input-block">
+              <button type="button" onClick={() => getGeolocalization()}>
+                Selecione a Localização Geográfica
+              </button>
+            </div>
+
+            {mapVisible === true ?
+
+            <div className="input-block">
+              <Map
+                center={[position.latitude, position.longitude]}
+                style={{ width: '100%', height: 280 }}
+                zoom={15}
+                onclick={handleMapClick}
+              >
+                <TileLayer
+                  url={`https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
+                />
+
+                {position.latitude != 0 && (
+
+                  <Marker
+                    interactive={false}
+                    icon={mapIconColaborador}
+                    position={[
+                      position.latitude,
+                      position.longitude
+                    ]}
+                  />
+                )}
+
+              </Map>
+            </div> : null
+            }
 
                 
             <div className="input-block">
