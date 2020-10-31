@@ -8,8 +8,25 @@ import mapMakerImg from '../images/logo.png';
 import '../styles/pages/usuario-map.css';
 import mapIcon from '../utils/mapIconUsuario';
 import api from '../services/api';
+import mapIconColaborador from '../utils/mapIconColaborador';
+import mapIconDoador from '../utils/mapIconDoador';
+import mapIconUsuario from '../utils/mapIconUsuario';
 
 interface Usuario{
+    id:number;
+    latitude:number;
+    longitude:number;
+    name:string;
+}
+
+interface Doador{
+    id:number;
+    latitude:number;
+    longitude:number;
+    name:string;
+}
+
+interface Colaborador{
     id:number;
     latitude:number;
     longitude:number;
@@ -19,10 +36,24 @@ interface Usuario{
 function UsuarioMap(){
 
     const [usuarios,setUsuario] = useState<Usuario[]>([]);
+    const [doadores,setDoador] = useState<Doador[]>([]);
+    const [colaboradores,setColaborador] = useState<Colaborador[]>([]);
+    
+    useEffect(() =>{
+        api.get('colaboradores').then(response =>{
+           setColaborador(response.data);
+        })
+    },[]);
 
     useEffect(() =>{
         api.get('usuarios').then(response =>{
            setUsuario(response.data);
+        })
+    },[]);
+
+    useEffect(() =>{
+        api.get('doadores').then(response =>{
+           setDoador(response.data);
         })
     },[]);
 
@@ -54,12 +85,46 @@ function UsuarioMap(){
                     return(
                         <Marker
                                 key={usuario.id}
-                                icon={mapIcon}
+                                icon={mapIconUsuario}
                                 position={[usuario.latitude,usuario.longitude]}  
                             >
                             <Popup closeButton={false} minWidth={240} maxWidth={240} className="map-popup">
                                 {usuario.name}
                                 <Link to={`/usuarios/${usuario.id}`}>
+                                    <FiArrowRight size={20} color = "#fff" />
+                                </Link>
+                            </Popup>
+                        </Marker>
+                       )
+                   })}
+
+                    {colaboradores.map(colaborador =>{
+                    return(
+                        <Marker
+                                key={colaborador.id}
+                                icon={mapIconColaborador}
+                                position={[colaborador.latitude,colaborador.longitude]}  
+                            >
+                            <Popup closeButton={false} minWidth={240} maxWidth={240} className="map-popup">
+                                {colaborador.name}
+                                <Link to={`/colaboradores/${colaborador.id}`}>
+                                    <FiArrowRight size={20} color = "#fff" />
+                                </Link>
+                            </Popup>
+                        </Marker>
+                       )
+                   })}
+
+                    {doadores.map(doador =>{
+                    return(
+                        <Marker
+                                key={doador.id}
+                                icon={mapIconDoador}
+                                position={[doador.latitude,doador.longitude]}  
+                            >
+                            <Popup closeButton={false} minWidth={240} maxWidth={240} className="map-popup">
+                                {doador.name}
+                                <Link to={`/doadores/${doador.id}`}>
                                     <FiArrowRight size={20} color = "#fff" />
                                 </Link>
                             </Popup>

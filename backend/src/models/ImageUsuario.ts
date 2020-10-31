@@ -1,7 +1,7 @@
 import {Entity, Column, PrimaryGeneratedColumn , ManyToOne, JoinColumn} from 'typeorm';
 import Usuario from './Usuario';
 
-@Entity('images')
+@Entity('imagesUsuarios')
 export default class ImageUsuario{
     @PrimaryGeneratedColumn('increment')
     id:number;
