@@ -2,8 +2,9 @@ import React, { FormEvent, useState, ChangeEvent } from "react";
 import { Map,Marker,TileLayer } from 'react-leaflet';
 import {LeafletMouseEvent} from 'leaflet';
 import { useHistory } from "react-router-dom";
+import { Alert } from 'reactstrap'
 
-import {FiPlus } from "react-icons/fi";
+import { FiPlus, FiAlertCircle } from "react-icons/fi";
 
 
 import Sidebar from "../components/Sidebar";
@@ -78,9 +79,15 @@ function getCep() {
   fetch(`https://viacep.com.br/ws/${cep}/json/`)
     .then((response) => response.json())
     .then(resp => {
-      setCep(resp.cep)
-      setStreet(resp.logradouro)
-      setDistrict(resp.bairro)
+      
+      if(JSON.stringify(resp) === '{"erro":true}') {
+        setError('CEP inválido!')
+        alertRegister()
+      } else {
+        setCep(resp.cep)
+        setStreet(resp.logradouro)
+        setDistrict(resp.bairro)
+      }
     })
     .catch(() => {
       setError('CEP inválido!')
@@ -127,11 +134,14 @@ function getGeolocalization() {
       data.append('images',image);
     })
 
-    await api.post('doador',data);
-
-    alert('Cadastro realizado com sucesso!');
-
-    history.push('/app');
+    try {
+      await api.post('doadores',data).then(() => {
+        alert('Cadastro realizado com sucesso!')
+        history.push('/app');
+      })
+    } catch (e) {
+      alert('Preencha todos os campos corretamente!');
+    }
 
   /*  console.log({
       position,
@@ -163,6 +173,15 @@ function getGeolocalization() {
                 />
 
             </div>
+
+            {error !== '' ?
+              <div className="input-block">
+                <Alert className="alerta error" isOpen={visible} >
+                  <FiAlertCircle className="alertCircle" size={20} />
+                  <div>{error}</div>
+                </Alert>
+              </div> : null
+            }
 
             <div className="input-block">
               <label htmlFor="cep">CEP:</label>

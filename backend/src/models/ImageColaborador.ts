@@ -1,7 +1,7 @@
 import {Entity, Column, PrimaryGeneratedColumn , ManyToOne, JoinColumn} from 'typeorm';
 import Colaborador from './Colaborador';
 
-@Entity('images')
+@Entity('imagesColaboradores')
 export default class ImageColaborador{
     @PrimaryGeneratedColumn('increment')
     id:number;

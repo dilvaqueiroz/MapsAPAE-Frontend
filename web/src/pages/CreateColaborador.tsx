@@ -4,7 +4,7 @@ import {LeafletMouseEvent} from 'leaflet';
 import { useHistory } from "react-router-dom";
 import { Alert } from 'reactstrap'
 
-import {FiPlus } from "react-icons/fi";
+import {FiPlus, FiAlertCircle } from "react-icons/fi";
 
 
 import Sidebar from "../components/Sidebar";
@@ -79,9 +79,15 @@ export default function CreateColaborador(){
     fetch(`https://viacep.com.br/ws/${cep}/json/`)
       .then((response) => response.json())
       .then(resp => {
-        setCep(resp.cep)
-        setStreet(resp.logradouro)
-        setDistrict(resp.bairro)
+
+        if(JSON.stringify(resp) === '{"erro":true}') {
+          setError('CEP inválido!')
+          alertRegister()
+        } else {
+          setCep(resp.cep)
+          setStreet(resp.logradouro)
+          setDistrict(resp.bairro)
+        }
       })
       .catch(() => {
         setError('CEP inválido!')
@@ -103,6 +109,8 @@ export default function CreateColaborador(){
         }))
       setmapVisible(true)
     }
+
+    console.log(cep)
   }
 
   async function handleSubmit(event:FormEvent){
@@ -127,11 +135,14 @@ export default function CreateColaborador(){
       data.append('images',image);
     })
 
-    await api.post('colaborador',data);
-
-    alert('Cadastro realizado com sucesso!');
-
-    history.push('/app');
+    try {
+      await api.post('colaboradores',data).then(() => {
+        alert('Cadastro realizado com sucesso!')
+        history.push('/app');
+      })
+    } catch (e) {
+      alert('Preencha todos os campos corretamente!');
+    }
 
     //alteração teste
 
@@ -168,7 +179,10 @@ export default function CreateColaborador(){
 
             {error !== '' ?
               <div className="input-block">
-                <Alert severity="error" color="danger" isOpen={visible}>{error}</Alert>
+                <Alert className="alerta error" isOpen={visible} >
+                  <FiAlertCircle className="alertCircle" size={20} />
+                  <div>{error}</div>
+                </Alert>
               </div> : null
             }
 
@@ -180,7 +194,6 @@ export default function CreateColaborador(){
                 maxLength={9}
                 onChange={event => setCep(mCEP(event.target.value))}
                 />
-                {console.log(mCEP(cep))}
             </div>
 
             <div className="input-block">

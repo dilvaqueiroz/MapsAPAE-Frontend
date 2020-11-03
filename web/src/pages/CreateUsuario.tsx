@@ -2,24 +2,23 @@ import React, { FormEvent, useState, ChangeEvent } from "react";
 import { Map,Marker,TileLayer } from 'react-leaflet';
 import {LeafletMouseEvent} from 'leaflet';
 import { useHistory } from "react-router-dom";
+import { Alert } from 'reactstrap'
 
-import {FiPlus } from "react-icons/fi";
+import {FiPlus, FiAlertCircle } from "react-icons/fi";
 
 
 import Sidebar from "../components/Sidebar";
-import mapIconUsuario from "../utils/mapIconUsuario";
 import api from "../services/api";
 
 import '../styles/pages/create-usuario.css';
+import mapIconUsuario from "../utils/mapIconUsuario";
 
-export default function CreateUsuario() {
+export default function CreateUsuario(){
 
   const history=useHistory();
-
   const [position,setPosition] = useState({latitude:0,longitude:0});
   const [name, setName]=useState('');
   const [about,setAbout]=useState('');
-  const [instructions,setInstructions]=useState('');
   const [opening_hours,setOpeningHours]=useState('');
   const [cep,setCep]=useState('');
   const [street,setStreet]=useState('');
@@ -29,6 +28,7 @@ export default function CreateUsuario() {
   const [visible, setVisible] = useState(false);
   const [mapVisible, setmapVisible] = useState(false);
   const [open_on_weekends,setOpenOnWeekends]=useState(true);
+  const [instructions,setInstructions]=useState('');
   const [images,setImages] = useState<File[]>([]);
   const [previewImages,setPreviewImages] = useState<string[]>([]);
 
@@ -56,56 +56,61 @@ export default function CreateUsuario() {
     setPreviewImages(selectedImagesPreview);
   }
 
-
+  // máscara para aceitar apenas números e colocar hífen no cep
   function mCEP(cep:string) {
     cep = cep.replace(/\D/g,"")
     cep = cep.replace(/(\d{3})(\d{1,3})$/,"$1-$2")
     return cep
   }
 
+    // tempo de aparição do erro
+    function alertRegister() {
+
+      setVisible(true)
   
-  // tempo de aparição do erro
-  function alertRegister() {
+      window.setTimeout(() => {
+        setVisible(false)
+      }, 2000)
+    }
 
-    setVisible(true)
+  // pega o cep através da api viacep
+  function getCep() {
+    setError('')
 
-    window.setTimeout(() => {
-      setVisible(false)
-    }, 2000)
+    fetch(`https://viacep.com.br/ws/${cep}/json/`)
+      .then((response) => response.json())
+      .then(resp => {
+
+        if(JSON.stringify(resp) === '{"erro":true}') {
+          setError('CEP inválido!')
+          alertRegister()
+        } else {
+          setCep(resp.cep)
+          setStreet(resp.logradouro)
+          setDistrict(resp.bairro)
+        }
+      })
+      .catch(() => {
+        setError('CEP inválido!')
+        alertRegister()
+      })
+
   }
 
-// pega o cep através da api viacep
-function getCep() {
-  setError('')
+  // retorna as informações do endereço como também a latitude e longitude
+  function getGeolocalization() {
 
-  fetch(`https://viacep.com.br/ws/${cep}/json/`)
-    .then((response) => response.json())
-    .then(resp => {
-      setCep(resp.cep)
-      setStreet(resp.logradouro)
-      setDistrict(resp.bairro)
-    })
-    .catch(() => {
-      setError('CEP inválido!')
-      alertRegister()
-    })
-
-}
-
-// retorna as informações do endereço como também a latitude e longitude
-function getGeolocalization() {
-
-  if (street) {
-    let street1 = street.split(" ").join("+")
-    fetch(`https://nominatim.openstreetmap.org/search?country=Brazil&city=Serra%20Talhada&street=${street1}&limit=1&format=json`)
-      .then((res) => res.json())
-      .then((response) => setPosition({
-        latitude: response[0].lat,
-        longitude: response[0].lon
-      }))
-    setmapVisible(true)
+    if (street) {
+      let street1 = street.split(" ").join("+")
+      fetch(`https://nominatim.openstreetmap.org/search?country=Brazil&city=Serra%20Talhada&street=${street1}&limit=1&format=json`)
+        .then((res) => res.json())
+        .then((response) => setPosition({
+          latitude: response[0].lat,
+          longitude: response[0].lon
+        }))
+      setmapVisible(true)
+    }
   }
-}
 
   async function handleSubmit(event:FormEvent){
     event.preventDefault();
@@ -130,11 +135,16 @@ function getGeolocalization() {
       data.append('images',image);
     })
 
-    await api.post('usuarios',data);
+    try {
+      await api.post('usuarios',data).then(() => {
+        alert('Cadastro realizado com sucesso!')
+        history.push('/app');
+      })
+    } catch (e) {
+      alert('Preencha todos os campos corretamente!');
+    }
 
-    alert('Cadastro realizado com sucesso!');
-
-    history.push('/app');
+    //alteração teste
 
   /*  console.log({
       position,
@@ -158,7 +168,7 @@ function getGeolocalization() {
             <legend>Dados do Usuário</legend>
 
             <div className="input-block">
-              <label htmlFor="name">Nome do Residente</label>
+              <label htmlFor="name">Nome do Usuário</label>
               <input 
                 id="name"
                 value={name}
@@ -166,6 +176,15 @@ function getGeolocalization() {
                 />
 
             </div>
+
+            {error !== '' ?
+              <div className="input-block">
+                <Alert className="alerta error" isOpen={visible} >
+                  <FiAlertCircle className="alertCircle" size={20} />
+                  <div>{error}</div>
+                </Alert>
+              </div> : null
+            }
 
             <div className="input-block">
               <label htmlFor="cep">CEP:</label>
@@ -175,7 +194,6 @@ function getGeolocalization() {
                 maxLength={9}
                 onChange={event => setCep(mCEP(event.target.value))}
                 />
-                {console.log(mCEP(cep))}
             </div>
 
             <div className="input-block">
@@ -296,8 +314,9 @@ function getGeolocalization() {
                />
             </div>
 
+
             <div className="input-block">
-              <label htmlFor="opening_hours">Horários Disponiveis para Receber Atividades</label>
+              <label htmlFor="opening_hours">Horários Disponiveis para Atendimento</label>
               <input 
                 id="opening_hours"
                 value={opening_hours} 

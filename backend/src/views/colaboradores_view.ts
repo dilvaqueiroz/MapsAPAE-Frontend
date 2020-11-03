@@ -1,5 +1,5 @@
 import Colaborador from '../models/Colaborador';
-import imagesView from './images_view';
+import imagesView from './imagesColaborador_view';
 
 export default{
     render(colaborador: Colaborador){
