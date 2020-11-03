@@ -29,6 +29,18 @@ export default{
         return response.json(colaboradorView.render(colaborador));
     },
 
+    async search(request: Request ,response: Response){
+        const {name} = request.params;
+
+        const doadoresRepository = getRepository(Colaborador);
+
+        const doador = await doadoresRepository.createQueryBuilder("colaboradores")
+                                                .where("colaboradores.name like :name", { name: `%${name}%` })
+                                                .getMany();
+
+        return response.json(colaboradorView.renderMany(doador));
+    },
+
     async create(request: Request ,response: Response){
         const {
             name,
