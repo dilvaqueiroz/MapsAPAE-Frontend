@@ -13,9 +13,15 @@ const upload = multer(uploadConfig);
 routes.get('/usuarios', UsuariosController.index);
 routes.get('/doadores',DoadoresController.index);
 routes.get('/colaboradores',ColaboradoresController.index);
+
+routes.put('/usuarios/:id', UsuariosController.change);
+routes.put('/doadores/:id',DoadoresController.change);
+routes.put('/colaboradores/:id',ColaboradoresController.change);
+
 routes.get('/usuarios/:id', UsuariosController.show);
 routes.get('/doadores/:id',DoadoresController.show);
 routes.get('/colaboradores/:id',ColaboradoresController.show);
+
 routes.post('/usuarios', upload.array('images'),UsuariosController.create);
 routes.post('/doadores',upload.array('images'),DoadoresController.create);
 routes.post('/colaboradores',upload.array('images'),ColaboradoresController.create);

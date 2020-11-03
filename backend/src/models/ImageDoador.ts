@@ -1,7 +1,7 @@
 import {Entity, Column, PrimaryGeneratedColumn , ManyToOne, JoinColumn} from 'typeorm';
 import Doador from './Doador';
 
-@Entity('images')
+@Entity('imagesDoadores')
 export default class ImageDoador{
     @PrimaryGeneratedColumn('increment')
     id:number;

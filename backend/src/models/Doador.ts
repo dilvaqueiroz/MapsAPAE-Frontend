@@ -1,5 +1,5 @@
 import {Entity, Column, PrimaryGeneratedColumn, OneToMany , JoinColumn} from 'typeorm';
-import Image from './ImageUsuario';
+import Image from './ImageDoador';
 
 @Entity('doadores')
 export default class Doador{
@@ -36,7 +36,7 @@ export default class Doador{
     @Column()
     open_on_weekends:boolean;
 
-    @OneToMany(()=> Image, image => image.usuario, {
+    @OneToMany(()=> Image, image => image.doador, {
         cascade:['insert','update']
     })
     @JoinColumn({name: 'doador_id'})

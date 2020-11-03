@@ -28,7 +28,7 @@ export class createImagesUsuarios1604025811050 implements MigrationInterface {
                 {
                     name:'ImageUsuario',
                     columnNames:['usuario_id'],
-                    referencedTableName:'usuarioss',
+                    referencedTableName:'usuarios',
                     referencedColumnNames: ['id'],
                     onUpdate:'CASCADE',
                     onDelete:'CASCADE',

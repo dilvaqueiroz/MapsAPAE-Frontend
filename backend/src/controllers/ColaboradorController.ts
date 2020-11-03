@@ -95,5 +95,9 @@ export default{
         await colaboradoresRepository.save(colaborador);
     
         return response.status(201).json({colaborador});
+    },
+
+    async change(request: Request ,response: Response){
+        // Novo metodo para put (alterar, modificar, editar)
     }
 };

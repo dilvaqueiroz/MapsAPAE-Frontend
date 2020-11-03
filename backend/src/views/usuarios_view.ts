@@ -1,5 +1,5 @@
 import Usuario from '../models/Usuario';
-import imagesView from './images_view';
+import imagesView from './imagesUsuario_view';
 
 export default{
     render(usuario: Usuario){

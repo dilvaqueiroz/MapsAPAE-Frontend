@@ -1,5 +1,5 @@
 import Doador from '../models/Doador';
-import imagesView from './images_view';
+import imagesView from './imagesDoador_view';
 
 export default{
     render(doador: Doador){

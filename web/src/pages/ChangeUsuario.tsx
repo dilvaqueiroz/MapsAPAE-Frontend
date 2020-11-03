@@ -136,7 +136,7 @@ export default function CreateUsuario(){
     })
 
     try {
-      await api.post('usuarios',data).then(() => {
+      await api.put('usuarios',data).then(() => {
         alert('Cadastro realizado com sucesso!')
         history.push('/app');
       })

@@ -29,11 +29,16 @@ export default{
         return response.json(usuarioView.render(usuario));
     },
 
+
     async create(request: Request ,response: Response){
         const {
             name,
             latitude,
             longitude,
+            cep,
+            street,
+            number,
+            district,
             about,
             instructions,
             opening_hours,
@@ -53,10 +58,14 @@ export default{
             name,
             latitude,
             longitude,
+            cep,
+            street,
+            number,
+            district,
             about,
             instructions,
             opening_hours,
-            open_on_weekends: open_on_weekends == 'true',
+            open_on_weekends: open_on_weekends == 'true', 
             images
         };
 
@@ -65,6 +74,10 @@ export default{
             latitude: Yup.number().required(),
             longitude: Yup.number().required(),
             about: Yup.string().required().max(300),
+            cep: Yup.string().required(),
+            street: Yup.string().required(),
+            number: Yup.string().required(),
+            district: Yup.string().required(),
             instructions: Yup.string().required(),
             opening_hours: Yup.string().required(),
             open_on_weekends: Yup.boolean().required(),
@@ -86,5 +99,10 @@ export default{
         await usuariosRepository.save(usuario);
     
         return response.status(201).json({usuario});
+    },
+
+    async change(request: Request ,response: Response){
+        // Novo metodo para put (alterar, modificar, editar)
     }
+
 };

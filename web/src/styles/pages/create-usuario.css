@@ -238,4 +238,30 @@ form.create-usuario-form button.confirm-button:hover {
 	border-radius: 10px 10px 10px 10px;
 }
 
+.alerta {
+	padding: 12px;
+	border: 1px solid gray;
+	border-radius: 3px;
+	margin: 10px;
+  font-size: 15px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.error {
+	border-color: #FF669D;
+	color: #e32636;
+	background-color: #fc9ebf;
+}
+
+.alertCircle {
+  display: flex;
+  justify-content: flex-start;
+  height: 25px;
+  width: 25px;
+  padding-right: 5px;
+  color: #e32636;
+}
+
 

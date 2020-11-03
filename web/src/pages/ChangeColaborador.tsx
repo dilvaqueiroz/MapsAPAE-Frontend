@@ -11,9 +11,9 @@ import Sidebar from "../components/Sidebar";
 import api from "../services/api";
 
 import '../styles/pages/create-usuario.css';
-import mapIconUsuario from "../utils/mapIconUsuario";
+import mapIconColaborador from "../utils/mapIconColaborador";
 
-export default function CreateUsuario(){
+export default function CreateColaborador(){
 
   const history=useHistory();
   const [position,setPosition] = useState({latitude:0,longitude:0});
@@ -28,7 +28,6 @@ export default function CreateUsuario(){
   const [visible, setVisible] = useState(false);
   const [mapVisible, setmapVisible] = useState(false);
   const [open_on_weekends,setOpenOnWeekends]=useState(true);
-  const [instructions,setInstructions]=useState('');
   const [images,setImages] = useState<File[]>([]);
   const [previewImages,setPreviewImages] = useState<string[]>([]);
 
@@ -110,6 +109,8 @@ export default function CreateUsuario(){
         }))
       setmapVisible(true)
     }
+
+    console.log(cep)
   }
 
   async function handleSubmit(event:FormEvent){
@@ -127,16 +128,15 @@ export default function CreateUsuario(){
     data.append('about',about);
     data.append('latitude',String(latitude));
     data.append('longitude',String(longitude));
-    data.append('instructions',instructions);
     data.append('opening_hours',opening_hours);
     data.append('open_on_weekends',String(open_on_weekends));
     
     images.forEach(image =>{
-      data.append('images',image);
+      data.append('imagesColaboradores',image);
     })
 
     try {
-      await api.post('usuarios',data).then(() => {
+      await api.put('colaboradores',data).then(() => {
         alert('Cadastro realizado com sucesso!')
         history.push('/app');
       })
@@ -165,10 +165,10 @@ export default function CreateUsuario(){
       <main>
         <form onSubmit={handleSubmit} className="create-usuario-form">
           <fieldset>
-            <legend>Dados do Usuário</legend>
+            <legend>Dados do Colaborador</legend>
 
             <div className="input-block">
-              <label htmlFor="name">Nome do Usuário</label>
+              <label htmlFor="name">Nome do Colaborador</label>
               <input 
                 id="name"
                 value={name}
@@ -271,7 +271,7 @@ export default function CreateUsuario(){
 
                   <Marker
                     interactive={false}
-                    icon={mapIconUsuario}
+                    icon={mapIconColaborador}
                     position={[
                       position.latitude,
                       position.longitude
@@ -304,15 +304,6 @@ export default function CreateUsuario(){
 
           <fieldset>
             <legend>Visitação</legend>
-
-            <div className="input-block">
-              <label htmlFor="instructions">Instruções Quando Não Houver Alguém em Casa</label>
-              <textarea
-               id="instructions" 
-               value={instructions} 
-               onChange={event => setInstructions(event.target.value)}
-               />
-            </div>
 
 
             <div className="input-block">
