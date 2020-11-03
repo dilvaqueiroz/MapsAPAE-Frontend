@@ -124,10 +124,10 @@ export default function CreateColaborador(){
     data.append('open_on_weekends',String(open_on_weekends));
     
     images.forEach(image =>{
-      data.append('images',image);
+      data.append('imagesColaboradores',image);
     })
 
-    await api.post('colaborador',data);
+    await api.post('colaboradores',data);
 
     alert('Cadastro realizado com sucesso!');
 
