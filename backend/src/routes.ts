@@ -19,9 +19,11 @@ routes.put('/doadores/:id',DoadoresController.change);
 routes.put('/colaboradores/:id',ColaboradoresController.change);
 
 routes.get('/usuarios/:id', UsuariosController.show);
+routes.get('/usuarios/:name/name',UsuariosController.search);
 routes.get('/doadores/:id',DoadoresController.show);
+routes.get('/doadores/:name/name',DoadoresController.search);
 routes.get('/colaboradores/:id',ColaboradoresController.show);
-
+routes.get('/colaboradores/:name/name',ColaboradoresController.search);
 routes.post('/usuarios', upload.array('images'),UsuariosController.create);
 routes.post('/doadores',upload.array('images'),DoadoresController.create);
 routes.post('/colaboradores',upload.array('images'),ColaboradoresController.create);

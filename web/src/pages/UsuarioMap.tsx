@@ -1,4 +1,4 @@
-import React, {useEffect,useState} from 'react';
+import React, {FormEvent, useEffect,useState} from 'react';
 import{Link} from 'react-router-dom';
 import {FiPlus,FiArrowRight} from 'react-icons/fi';
 import {Map,TileLayer,Marker,Popup} from 'react-leaflet';
@@ -38,6 +38,7 @@ function UsuarioMap(){
     const [usuarios,setUsuario] = useState<Usuario[]>([]);
     const [doadores,setDoador] = useState<Doador[]>([]);
     const [colaboradores,setColaborador] = useState<Colaborador[]>([]);
+    const [name,setName] = useState('');
     
     useEffect(() =>{
         api.get('colaboradores').then(response =>{
@@ -57,6 +58,13 @@ function UsuarioMap(){
         })
     },[]);
 
+    async function handleSubmit(event:FormEvent) {
+        event.preventDefault();
+
+        await api.get(`doadores/${name}/name`)
+
+    }
+
 
     return(
         <div id="page-map">
@@ -73,6 +81,23 @@ function UsuarioMap(){
                     <span>Pernambuco</span>
                 </footer>
             </aside>
+
+            <div>
+                <div id="sidebar">
+                        <div className="search-forms standard-form">
+                            <form onSubmit={handleSubmit} className="search_form">
+                                {/* <input type="text" className="search"></input> */}
+                                <input type="submit"
+                                className="float" value="Ok" />
+                                <div className="query_wrapper">
+                                    <input id="name" type="text" 
+                                    placeholder="Buscar" className="overflow"
+                                    value={name} onChange={event => setName(event.target.value)} />
+                                </div>
+                            </form>
+                        </div>
+                </div>
+            </div>
             
             <Map
                 center={[-7.9933402,-38.3008299]}
@@ -81,6 +106,7 @@ function UsuarioMap(){
                 >
                    <TileLayer url={`https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}/> 
                    {/* <TileLayer url='https://a.tile.openstreetmap.org/{z}/{x}/{y}.png' />*/}
+                   
                 {usuarios.map(usuario =>{
                     return(
                         <Marker

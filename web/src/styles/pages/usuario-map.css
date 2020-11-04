@@ -100,3 +100,86 @@
  #page-map .map-popup .leaflet-popup-tip-container{
      display: none;
  }
+
+ #page-map #sidebar {
+     position: absolute;
+     z-index: 800;
+     margin-left: 800px;
+     margin-top: 20px;
+     height: 50px;
+     overflow: hidden;
+     float: left;
+     width: 350px;
+     background: #fff;
+ }
+
+ #page-map #sidebar>div {
+     position: relative;
+     float: left;
+     clear: both;
+     width: 100%;
+     height: 100%;
+     border-style: solid;
+     border-color: #eee;
+     padding: 2px 4px;
+     border-radius: 4px 4px 4px 4px;
+     border-width: 10px;
+ }
+
+ .standard-form .search_form {
+     position: relative;
+     width: 100%;
+     height: 100%;
+ }
+
+ .standard-form .search_form input.float[type=submit] {
+     float: right;
+     width: auto;
+     min-width: 0;
+     border-radius: 0 2px 2px 0;
+ }
+
+ .standard-form .search_form input.float[type=submit]:hover {
+     background: #96feff;
+ }
+
+ .standard-form input[type="submit"] {
+     line-height: normal;
+     cursor: pointer;
+     border: 0;
+     display: inline-block;
+     padding-left: 10px;
+     padding-right: 10px;
+     min-height: 25px;
+     min-width: 120px;
+     margin: 0 0 10px 0;
+     color: white;
+     background: #15c3d6;
+     text-align: center;
+     border-radius: 2px;
+ }
+
+ .standard-form .search_form .query_wrapper {
+     position: relative;
+     overflow: hidden;
+     border: transparent;
+ }
+
+ .standard-form .search_form input.overflow[type=text] {
+     border: none;
+     border-right: none;
+     border-radius: 5px 0px 0px 5px;
+     border-width: 0px;
+ }
+
+ .standard-form .search_form input.overflow[type=text]:focus {
+    box-shadow: 0 0 0 0;
+    border: 0 none;
+    outline: 0;
+ }
+
+ .standard-form .search_form input[type=text] {
+     width: 100%;
+     height: 25px;
+     transition: 300ms linear;
+ }
