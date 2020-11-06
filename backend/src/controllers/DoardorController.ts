@@ -34,9 +34,12 @@ export default{
 
         const doadoresRepository = getRepository(Doador);
 
-        const doador = await doadoresRepository.createQueryBuilder("doadores")
-                                                .where("doadores.name like :name", { name: `%${name}%` })
-                                                .getMany();
+        const doador = await doadoresRepository.find({
+            relations: ['images'],
+            where: {
+                name: name
+            }
+        })
 
         return response.json(doadorView.renderMany(doador));
     },

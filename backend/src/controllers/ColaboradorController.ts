@@ -32,13 +32,16 @@ export default{
     async search(request: Request ,response: Response){
         const {name} = request.params;
 
-        const doadoresRepository = getRepository(Colaborador);
+        const colaboradoresRepository = getRepository(Colaborador);
 
-        const doador = await doadoresRepository.createQueryBuilder("colaboradores")
-                                                .where("colaboradores.name like :name", { name: `%${name}%` })
-                                                .getMany();
+        const colaborador = await colaboradoresRepository.find({
+            relations: ['images'],
+            where: {
+                name: name
+            }
+        });
 
-        return response.json(colaboradorView.renderMany(doador));
+        return response.json(colaboradorView.renderMany(colaborador));
     },
 
     async create(request: Request ,response: Response){
