@@ -1,7 +1,7 @@
 import React, {FormEvent, useEffect,useState} from 'react';
 import{Link} from 'react-router-dom';
 import {FiPlus,FiArrowRight} from 'react-icons/fi';
-import {Map,TileLayer,Marker,Popup} from 'react-leaflet';
+import {Map,TileLayer,Marker,Popup, Circle} from 'react-leaflet';
 
 import mapMakerImg from '../images/logo.png';
 
@@ -11,6 +11,7 @@ import api from '../services/api';
 import mapIconColaborador from '../utils/mapIconColaborador';
 import mapIconDoador from '../utils/mapIconDoador';
 import mapIconUsuario from '../utils/mapIconUsuario';
+/* import { Tooltip } from 'reactstrap'; */
 
 interface Usuario{
     id:number;
@@ -39,6 +40,7 @@ function UsuarioMap(){
     const [doadores,setDoador] = useState<Doador[]>([]);
     const [colaboradores,setColaborador] = useState<Colaborador[]>([]);
     const [name,setName] = useState('');
+    const [doadores2,setDoador2] = useState<Doador[]>([]);
     
     useEffect(() =>{
         api.get('colaboradores').then(response =>{
@@ -61,10 +63,28 @@ function UsuarioMap(){
     async function handleSubmit(event:FormEvent) {
         event.preventDefault();
 
-        await api.get(`doadores/${name}/name`)
-
+        try {
+            await api.get(`doadores/${name}/name`).then(res => setDoador2(res.data))
+        } catch(e) {
+            console.log('Usuário não existe!')
+        }
     }
 
+    function openPopup(name: string) {
+        if(doadores2 != null) {
+            const d = doadores2.forEach(doador => {
+                if(doador.name === name) {
+                    return true
+                } else {
+                    return false
+                }
+            })
+
+            return d
+        } else {
+            return false
+        }
+    }
 
     return(
         <div id="page-map">
@@ -92,7 +112,9 @@ function UsuarioMap(){
                                 <div className="query_wrapper">
                                     <input id="name" type="text" 
                                     placeholder="Buscar" className="overflow"
-                                    value={name} onChange={event => setName(event.target.value)} />
+                                    value={name} onChange={event => {
+                                        setName(event.target.value)
+                                    }} />
                                 </div>
                             </form>
                         </div>
@@ -129,7 +151,7 @@ function UsuarioMap(){
                         <Marker
                                 key={colaborador.id}
                                 icon={mapIconColaborador}
-                                position={[colaborador.latitude,colaborador.longitude]}  
+                                position={[colaborador.latitude,colaborador.longitude]}
                             >
                             <Popup closeButton={false} minWidth={240} maxWidth={240} className="map-popup">
                                 {colaborador.name}
@@ -154,6 +176,17 @@ function UsuarioMap(){
                                     <FiArrowRight size={20} color = "#fff" />
                                 </Link>
                             </Popup>
+                            {doadores2 != null ? doadores2.map(d => {
+                                if(d.name === doador.name) {
+                                    return (
+                                        <Circle
+                                            key={d.id}
+                                            center={{ lat: d.latitude, lng: d.longitude }}
+                                            fillColor="green"
+                                            radius={30} />
+                                    )
+                                }
+                            }): null}
                         </Marker>
                        )
                    })}

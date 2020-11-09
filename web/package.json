@@ -19,10 +19,11 @@
     "react-dom": "^16.14.0",
     "react-icons": "^3.11.0",
     "react-leaflet": "^2.7.0",
+    "react-leaflet-search": "^2.0.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
     "reactstrap": "^8.7.0",
-    "typescript": "^3.7.5"
+    "typescript": "^3.9.7"
   },
   "scripts": {
     "start": "react-scripts start",

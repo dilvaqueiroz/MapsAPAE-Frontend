@@ -105,6 +105,16 @@ form.create-usuario-form .input-block label span {
   line-height: 24px;
 }
 
+form.create-usuario-form .input-block2 input,
+form.create-usuario-form .input-block2 textarea {
+  width: 100%;
+  background: #F5F8FA;
+  border: 1px solid #D3E2E5;
+  border-radius: 4px;
+  outline: none;
+  color: #5C8599;
+}
+
 form.create-usuario-form .input-block input,
 form.create-usuario-form .input-block textarea {
   width: 100%;
@@ -116,7 +126,7 @@ form.create-usuario-form .input-block textarea {
 }
 
 form.create-usuario-form .input-block input {
-  height: 64px;
+  height: 40px;
   padding: 0 16px;
 }
 
