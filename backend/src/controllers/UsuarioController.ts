@@ -115,6 +115,10 @@ export default{
 
     async change(request: Request ,response: Response){
         // Novo metodo para put (alterar, modificar, editar)
+        const {id} = request.params;
+
+        const usuariosRepository = getRepository(Usuario);
+
     },
 
 };

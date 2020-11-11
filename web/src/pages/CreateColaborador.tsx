@@ -1,6 +1,6 @@
 import React, { FormEvent, useState, ChangeEvent } from "react";
 import { Map,Marker,TileLayer } from 'react-leaflet';
-import {LeafletMouseEvent} from 'leaflet';
+import {LatLng, LeafletMouseEvent} from 'leaflet';
 import { useHistory } from "react-router-dom";
 import { Alert } from 'reactstrap'
 import ReactLeafletSearch from "react-leaflet-search";
@@ -250,18 +250,20 @@ export default function CreateColaborador(){
               />
             </div>
 
-            <div className="input-block">
+            {/* <div className="input-block">
               <button type="button" id="button-c" onClick={() => getGeolocalization()}>
                   Selecione a Localização Geográfica
               </button>
-            </div>
+            </div> */}
 
-            {mapVisible === true ?
+            <label htmlFor="localization">Selecione a Localização Geográfica</label>
 
-            <div className="input-block">
+            {/* {mapVisible === true ? */}
+
+            <div className="input-block2">
               <Map
-                center={[position.latitude, position.longitude]}
-                style={{ width: '100%', height: 280 }}
+                center={[-7.987880130674069, -38.29668760299683]}
+                style={{ width: '100%', height: 380 }}
                 zoom={15}
                 onclick={handleMapClick}
               >
@@ -269,7 +271,7 @@ export default function CreateColaborador(){
                   url={`https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
                 />
 
-                {/* <ReactLeafletSearch
+                <ReactLeafletSearch
                   position="topright"
                   inputPlaceholder="Buscar"
                   className="search-map"
@@ -286,14 +288,14 @@ export default function CreateColaborador(){
                   }}
                   markerIcon={mapIconColaborador}
                   closeResultsOnClick={true}
-
+                  showPopup={false}
                   openSearchOnLoad={true}
                   providerOptions={{region: 'br'}}
 
                 // default provider OpenStreetMap
                 // provider="BingMap"
                 // providerKey="AhkdlcKxeOnNCJ1wRIPmrOXLxtEHDvuWUZhiT4GYfWgfxLthOYXs5lUMqWjQmc27"
-                /> */}
+                />
 
                 {position.latitude != 0 && (
 
@@ -308,8 +310,8 @@ export default function CreateColaborador(){
                 )}
 
               </Map>
-            </div> : null
-            }
+            </div> {/* : null
+            } */}
 
                 
             <div className="input-block">
@@ -339,7 +341,8 @@ export default function CreateColaborador(){
               <input 
                 id="opening_hours"
                 value={opening_hours} 
-                onChange={event => setOpeningHours(event.target.value)}
+                onChange={event => {console.log(position.latitude, position.longitude) 
+                  setOpeningHours(event.target.value)}}
               />
             </div>
 
