@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import{getRepository} from 'typeorm';
+import{Any, getRepository} from 'typeorm';
 import colaboradorView from '../views/colaboradores_view';
 import * as Yup from 'yup';
 
