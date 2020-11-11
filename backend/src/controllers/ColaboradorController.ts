@@ -36,9 +36,7 @@ export default{
 
         const colaborador = await colaboradoresRepository.find({
             relations: ['images'],
-            where: {
-                name: name
-            }
+            where: `name LIKE '%${name}%'`
         });
 
         return response.json(colaboradorView.renderMany(colaborador));

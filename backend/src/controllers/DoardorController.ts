@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import{getRepository} from 'typeorm';
+import{getRepository, Like} from 'typeorm';
 import doadorView from '../views/doadores_view';
 import * as Yup from 'yup';
 
@@ -36,9 +36,7 @@ export default{
 
         const doador = await doadoresRepository.find({
             relations: ['images'],
-            where: {
-                name: name
-            }
+            where: `name LIKE '%${name}%'`
         })
 
         return response.json(doadorView.renderMany(doador));
