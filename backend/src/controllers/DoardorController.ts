@@ -108,5 +108,9 @@ export default{
         await doadoresRepository.save(doador);
     
         return response.status(201).json({doador});
-    }
+    },
+
+    async change(request: Request ,response: Response){
+        // Novo metodo para put (alterar, modificar, editar)
+    },
 };

@@ -111,5 +111,10 @@ export default{
         await usuariosRepository.save(usuario);
     
         return response.status(201).json({usuario});
-    }
+    },
+
+    async change(request: Request ,response: Response){
+        // Novo metodo para put (alterar, modificar, editar)
+    },
+
 };

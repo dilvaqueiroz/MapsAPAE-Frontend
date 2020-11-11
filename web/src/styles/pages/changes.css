@@ -1,0 +1,23 @@
+.config-button-change{
+
+    z-index: 10;
+
+    width: 175px;
+    height: 64px;
+    background: #15c3d6;
+    border-radius: 28px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    margin-left: 425px;
+    display: flex;
+
+    transition: background-color 0.2s;
+
+}
+
+    .config-button-change:hover{
+    background: #96feff;
+} 
