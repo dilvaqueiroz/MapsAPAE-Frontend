@@ -13,7 +13,7 @@ import api from "../services/api";
 
 import '../styles/pages/create-usuario.css';
 
-export default function CreateDoador(){
+export default function ChangeDoador(){
 
   const history=useHistory();
   const [position,setPosition] = useState({latitude:0,longitude:0});

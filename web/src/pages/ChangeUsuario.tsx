@@ -4,6 +4,7 @@ import {LeafletMouseEvent} from 'leaflet';
 import { useHistory } from "react-router-dom";
 import { Alert } from 'reactstrap'
 
+
 import {FiPlus, FiAlertCircle } from "react-icons/fi";
 
 
@@ -13,7 +14,7 @@ import api from "../services/api";
 import '../styles/pages/create-usuario.css';
 import mapIconUsuario from "../utils/mapIconUsuario";
 
-export default function CreateUsuario(){
+export default function ChangeUsuario(){
 
   const history=useHistory();
   const [position,setPosition] = useState({latitude:0,longitude:0});
@@ -136,7 +137,7 @@ export default function CreateUsuario(){
     })
 
     try {
-      await api.put('usuarios',data).then(() => {
+      await api.put('usuarios',data).then(() => { // modifiquei aqui PUT
         alert('Cadastro realizado com sucesso!')
         history.push('/app');
       })
@@ -349,6 +350,7 @@ export default function CreateUsuario(){
           <button className="confirm-button" type="submit">
             Confirmar
           </button>
+          
         </form>
       </main>
     </div>

@@ -13,7 +13,7 @@ import api from "../services/api";
 import '../styles/pages/create-usuario.css';
 import mapIconColaborador from "../utils/mapIconColaborador";
 
-export default function CreateColaborador(){
+export default function ChangeColaborador(){
 
   const history=useHistory();
   const [position,setPosition] = useState({latitude:0,longitude:0});
@@ -136,7 +136,7 @@ export default function CreateColaborador(){
     })
 
     try {
-      await api.put('colaboradores',data).then(() => {
+      await api.put('colaboradores', data).then(() => {
         alert('Cadastro realizado com sucesso!')
         history.push('/app');
       })

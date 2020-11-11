@@ -1,8 +1,9 @@
 import React from "react";
 import { FiClock, FiInfo} from "react-icons/fi";
 import { Map, Marker, TileLayer } from "react-leaflet";
-import {useParams} from 'react-router-dom';
+import {useParams, Link} from 'react-router-dom';
 
+import '../styles/pages/changes.css';
 import '../styles/pages/usuario.css';
 import Sidebar from "../components/Sidebar";
 import mapIconUsuario from "../utils/mapIconUsuario";
@@ -40,7 +41,7 @@ export default function Usuario() {
   
 
   useEffect(() =>{
-      api.get(`usuarios/${params.id}`).then(response =>{
+      api.get(`usuarios/${params.id}`).then(response =>{ // Erro aqui na parte do botão editar PUT 
          setUsuario(response.data);
       })
   },[params.id]);
@@ -72,11 +73,18 @@ if(!usuario){
               </button>
              );
            })}
-            
+                 
           </div>
           
           <div className="usuario-details-content">
+            <div className="div-change">
             <h1>{usuario.name}</h1>
+              <Link to="/usuarios/change/:id" className="config-button-change">
+                      Editar
+              </Link>
+              
+            </div>
+           
             <p>{usuario.district}</p>
             <p>{usuario.street}</p>
             <p>{usuario.number}</p>
@@ -129,7 +137,9 @@ if(!usuario){
                   fim de semana
                 </div>
                 )}
+
               </div>
+              
           </div>
         </div>
       </main>

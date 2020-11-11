@@ -10,6 +10,9 @@ import CreateUsuario from './pages/CreateUsuario'
 import CreateDoador from './pages/CreateDoador'
 import CreateColaborador from './pages/CreateColaborador';
 import UsuarioMap from './pages/UsuarioMap';
+import ChangeUsuario from './pages/ChangeUsuario';
+import ChangeDoador from './pages/ChangeDoador';
+import ChangeColaborador from './pages/ChangeColaborador';
 
 
 
@@ -26,6 +29,9 @@ function Routes(){
                 <Route path="/usuarios/:id" component={Usuario}/>
                 <Route path="/doadores/:id" component={Doador}/>
                 <Route path="/colaboradores/:id" component={Colaborador}/>
+                <Route path="/usuarios/change/:id" component={ChangeUsuario}/> 
+                <Route path="/doadores/change/:id" component={ChangeDoador}/>
+                <Route path="/colaboradores/change/:id" component={ChangeColaborador}/>
             </Switch>
         </BrowserRouter>
     );

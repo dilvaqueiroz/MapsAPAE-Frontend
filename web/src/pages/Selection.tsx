@@ -1,7 +1,6 @@
 import React from "react";
 import { FiArrowRight, FiClock, FiInfo} from "react-icons/fi";
 
-import '../styles/pages/usuario.css';
 import Sidebar from "../components/Sidebar";
 import '../styles/pages/selection.css';
 import { Link } from "react-router-dom";

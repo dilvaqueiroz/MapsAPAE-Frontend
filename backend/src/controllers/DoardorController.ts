@@ -114,5 +114,5 @@ export default{
 
     async change(request: Request ,response: Response){
         // Novo metodo para put (alterar, modificar, editar)
-    }
+    },
 };
