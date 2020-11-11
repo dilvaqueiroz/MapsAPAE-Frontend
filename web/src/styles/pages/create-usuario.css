@@ -110,7 +110,7 @@ form.create-usuario-form .input-block2 textarea {
   width: 100%;
   background: #F5F8FA;
   border: 1px solid #D3E2E5;
-  border-radius: 4px;
+  /* border-radius: 4px; */
   outline: none;
   color: #5C8599;
 }

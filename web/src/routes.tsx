@@ -29,7 +29,7 @@ function Routes(){
                 <Route path="/usuarios/:id" component={Usuario}/>
                 <Route path="/doadores/:id" component={Doador}/>
                 <Route path="/colaboradores/:id" component={Colaborador}/>
-                <Route path="/usuarios/change/:id" component={ChangeUsuario}/> 
+                <Route path="/users/:id/change" component={ChangeUsuario}/> 
                 <Route path="/doadores/change/:id" component={ChangeDoador}/>
                 <Route path="/colaboradores/change/:id" component={ChangeColaborador}/>
             </Switch>

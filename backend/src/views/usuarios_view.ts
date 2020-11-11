@@ -6,6 +6,10 @@ export default{
         return{
             id:usuario.id,
             name:usuario.name,
+            cep: usuario.cep,
+            street: usuario.street,
+            district: usuario.district,
+            number: usuario.number,
 	        latitude:usuario.latitude,
 	        longitude:usuario.longitude,
 	        about:usuario.about,

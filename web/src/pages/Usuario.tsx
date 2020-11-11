@@ -79,7 +79,7 @@ if(!usuario){
           <div className="usuario-details-content">
             <div className="div-change">
             <h1>{usuario.name}</h1>
-              <Link to="/usuarios/change/:id" className="config-button-change">
+              <Link to={`/users/${params.id}/change`} className="config-button-change">
                       Editar
               </Link>
               
