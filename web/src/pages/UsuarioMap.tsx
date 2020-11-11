@@ -6,7 +6,6 @@ import {Map,TileLayer,Marker,Popup, Circle} from 'react-leaflet';
 import mapMakerImg from '../images/logo.png';
 
 import '../styles/pages/usuario-map.css';
-import mapIcon from '../utils/mapIconUsuario';
 import api from '../services/api';
 import mapIconColaborador from '../utils/mapIconColaborador';
 import mapIconDoador from '../utils/mapIconDoador';
@@ -40,7 +39,13 @@ function UsuarioMap(){
     const [doadores,setDoador] = useState<Doador[]>([]);
     const [colaboradores,setColaborador] = useState<Colaborador[]>([]);
     const [name,setName] = useState('');
+    const [usuarios2,setUsuario2] = useState<Usuario[]>([]);
     const [doadores2,setDoador2] = useState<Doador[]>([]);
+    const [colaboradores2,setColaborador2] = useState<Colaborador[]>([]);
+    const [usuarios3,setUsuario3] = useState<Usuario[]>([]);
+    const [doadores3,setDoador3] = useState<Doador[]>([]);
+    const [colaboradores3,setColaborador3] = useState<Colaborador[]>([]);
+    const [position,setPosition] = useState({latitude:0,longitude:0});
     
     useEffect(() =>{
         api.get('colaboradores').then(response =>{
@@ -68,21 +73,39 @@ function UsuarioMap(){
         } catch(e) {
             console.log('Usuário não existe!')
         }
+
+        try{
+            await api.get(`usuarios/${name}/name`).then(res => setUsuario2(res.data))
+        } catch(e) {
+            console.log('Usuário não existe')
+        }
+
+        try {
+            await api.get(`colaboradores/${name}/name`).then(res => setColaborador2(res.data))
+        } catch(e) {
+            console.log('Usuário não existe')
+        }
     }
 
-    function openPopup(name: string) {
-        if(doadores2 != null) {
-            const d = doadores2.forEach(doador => {
-                if(doador.name === name) {
-                    return true
-                } else {
-                    return false
-                }
-            })
+    async function handleSubmit2(event:FormEvent) {
+        event.preventDefault();
 
-            return d
-        } else {
-            return false
+        try {
+            await api.get(`doadores/${name}/name`).then(res => setDoador3(res.data))
+        } catch(e) {
+            console.log('Usuário não existe!')
+        }
+
+        try{
+            await api.get(`usuarios/${name}/name`).then(res => setUsuario3(res.data))
+        } catch(e) {
+            console.log('Usuário não existe')
+        }
+
+        try {
+            await api.get(`colaboradores/${name}/name`).then(res => setColaborador3(res.data))
+        } catch(e) {
+            console.log('Usuário não existe')
         }
     }
 
@@ -114,6 +137,13 @@ function UsuarioMap(){
                                     placeholder="Buscar" className="overflow"
                                     value={name} onChange={event => {
                                         setName(event.target.value)
+                                        handleSubmit2(event)
+                                        
+                                        if(doadores3 !== null) {
+                                            doadores3.map(d => {
+                                                console.log(d.name)
+                                            })
+                                        }
                                     }} />
                                 </div>
                             </form>
@@ -142,6 +172,17 @@ function UsuarioMap(){
                                     <FiArrowRight size={20} color = "#fff" />
                                 </Link>
                             </Popup>
+                            {usuarios2 != null ? usuarios2.map(d => {
+                                if(d.name === usuario.name) {
+                                    return (
+                                        <Circle
+                                            key={d.id}
+                                            center={{ lat: d.latitude, lng: d.longitude }}
+                                            fillColor="green"
+                                            radius={30} />
+                                    )
+                                }
+                            }) : null}
                         </Marker>
                        )
                    })}
@@ -159,6 +200,17 @@ function UsuarioMap(){
                                     <FiArrowRight size={20} color = "#fff" />
                                 </Link>
                             </Popup>
+                            {colaboradores2 != null ? colaboradores2.map(d => {
+                                if(d.name === colaborador.name) {
+                                    return (
+                                        <Circle
+                                            key={d.id}
+                                            center={{ lat: d.latitude, lng: d.longitude }}
+                                            fillColor="green"
+                                            radius={30} />
+                                    )
+                                }
+                            }) : null}
                         </Marker>
                        )
                    })}
@@ -186,7 +238,7 @@ function UsuarioMap(){
                                             radius={30} />
                                     )
                                 }
-                            }): null}
+                            }) : null}
                         </Marker>
                        )
                    })}

@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import{getRepository} from 'typeorm';
+import{getRepository, Like} from 'typeorm';
 import colaboradorView from '../views/colaboradores_view';
 import * as Yup from 'yup';
 
@@ -36,9 +36,7 @@ export default{
 
         const colaborador = await colaboradoresRepository.find({
             relations: ['images'],
-            where: {
-                name: name
-            }
+            where: `name LIKE '%${name}%'`
         });
 
         return response.json(colaboradorView.renderMany(colaborador));
