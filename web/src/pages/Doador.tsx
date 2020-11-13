@@ -1,7 +1,7 @@
 import React from "react";
 import { FiClock, FiInfo} from "react-icons/fi";
 import { Map, Marker, TileLayer } from "react-leaflet";
-import {useParams} from 'react-router-dom';
+import {useParams,Link} from 'react-router-dom';
 
 import '../styles/pages/usuario.css';
 import Sidebar from "../components/Sidebar";
@@ -75,7 +75,13 @@ if(!doador){
           </div>
           
           <div className="usuario-details-content">
-            <h1>{doador.name}</h1>
+            <div className="div-change">
+              <h1>{doador.name}</h1>
+              <Link to={`/donors/${params.id}/change`} className="config-button-change">
+                      Editar
+              </Link>
+              
+            </div>
             <p>{doador.district}</p>
             <p>{doador.street}</p>
             <p>{doador.number}</p>

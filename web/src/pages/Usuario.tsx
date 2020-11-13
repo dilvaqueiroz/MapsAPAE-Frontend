@@ -41,7 +41,7 @@ export default function Usuario() {
   
 
   useEffect(() =>{
-      api.get(`usuarios/${params.id}`).then(response =>{ // Erro aqui na parte do botão editar PUT 
+      api.get(`usuarios/${params.id}`).then(response =>{ 
          setUsuario(response.data);
       })
   },[params.id]);
@@ -84,7 +84,6 @@ if(!usuario){
               </Link>
               
             </div>
-           
             <p>{usuario.district}</p>
             <p>{usuario.street}</p>
             <p>{usuario.number}</p>

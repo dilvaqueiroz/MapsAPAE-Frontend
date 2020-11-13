@@ -1,7 +1,7 @@
-import React, { FormEvent, useState, ChangeEvent } from "react";
+import React, { FormEvent, useState, ChangeEvent,useEffect} from "react";
 import { Map,Marker,TileLayer } from 'react-leaflet';
 import {LeafletMouseEvent} from 'leaflet';
-import { useHistory } from "react-router-dom";
+import { useHistory,useParams} from "react-router-dom";
 import { Alert } from 'reactstrap'
 
 import {FiPlus, FiAlertCircle } from "react-icons/fi";
@@ -12,6 +12,10 @@ import api from "../services/api";
 
 import '../styles/pages/create-usuario.css';
 import mapIconColaborador from "../utils/mapIconColaborador";
+
+interface ColaboradorParams {
+  id: string;
+}
 
 export default function ChangeColaborador(){
 
@@ -30,6 +34,26 @@ export default function ChangeColaborador(){
   const [open_on_weekends,setOpenOnWeekends]=useState(true);
   const [images,setImages] = useState<File[]>([]);
   const [previewImages,setPreviewImages] = useState<string[]>([]);
+  const params = useParams<ColaboradorParams>();
+
+  useEffect(() => {
+    api.get(`colaboradores/${params.id}`).then(response => JSON.stringify(response.data)).then(res => {
+      const collaborator = JSON.parse(res)
+      setName(collaborator.name)
+      setCep(collaborator.cep)
+      setStreet(collaborator.street)
+      setNumber(collaborator.number)
+      setDistrict(collaborator.district)
+      setPosition({
+        latitude: collaborator.latitude,
+        longitude: collaborator.longitude
+      })
+      setAbout(collaborator.about)
+      setOpeningHours(collaborator.opening_hours)
+      setOpenOnWeekends(collaborator.open_on_weekends)
+      setImages(collaborator.images)
+    })
+  }, [params.id])
 
   function handleMapClick(event: LeafletMouseEvent){
     const {lat,lng} = event.latlng;
