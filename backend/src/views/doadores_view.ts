@@ -6,6 +6,10 @@ export default{
         return{
             id:doador.id,
             name:doador.name,
+            cep: doador.cep,
+            street: doador.street,
+            district: doador.district,
+            number: doador.number,
 	        latitude:doador.latitude,
 	        longitude:doador.longitude,
 	        about:doador.about,

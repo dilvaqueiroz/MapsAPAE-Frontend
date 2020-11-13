@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import { Alert } from 'reactstrap'
 
 import {FiPlus, FiAlertCircle } from "react-icons/fi";
+import ReactLeafletSearch from "react-leaflet-search";
 
 
 import Sidebar from "../components/Sidebar";
@@ -248,23 +249,50 @@ export default function CreateUsuario(){
               />
             </div>
 
-            <div className="input-block">
+            {/*<div className="input-block">
               <button type="button" id="button-c" onClick={() => getGeolocalization()}>
                 Selecione a Localização Geográfica
               </button>
-            </div>
+          </div>*/}
 
-            {mapVisible === true ?
+            {/*mapVisible === true ?*/}
 
-            <div className="input-block">
+            <div className="input-block2">
               <Map
-                center={[position.latitude, position.longitude]}
-                style={{ width: '100%', height: 280 }}
+                center={[-7.987880130674069, -38.29668760299683]}
+                style={{ width: '100%', height: 380 }}
                 zoom={15}
                 onclick={handleMapClick}
+                
               >
                 <TileLayer
                   url={`https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
+                />
+
+                <ReactLeafletSearch
+                  position="topright"
+                  inputPlaceholder="Buscar"
+                  className="search-map"
+                  showMarker={mapVisible}
+                  zoom={15}
+                  onChange={event => {
+                    const {lat,lng} = event.latLng
+                    setmapVisible(false)
+                    setPosition({
+                      latitude: lat,
+                      longitude: lng
+                    })
+                    setmapVisible(true)
+                  }}
+                  markerIcon={mapIconUsuario}
+                  closeResultsOnClick={true}
+                  showPopup={false}
+                  openSearchOnLoad={true}
+                  providerOptions={{region: 'br'}}
+
+                // default provider OpenStreetMap
+                // provider="BingMap"
+                // providerKey="AhkdlcKxeOnNCJ1wRIPmrOXLxtEHDvuWUZhiT4GYfWgfxLthOYXs5lUMqWjQmc27"
                 />
 
                 {position.latitude != 0 && (
@@ -280,8 +308,8 @@ export default function CreateUsuario(){
                 )}
 
               </Map>
-            </div> : null
-            }
+            </div> {/* : null
+            }*/} 
 
                 
             <div className="input-block">

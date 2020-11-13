@@ -1,7 +1,8 @@
-import React, { FormEvent, useState, ChangeEvent,useEffect } from "react";
+import React, { FormEvent, useState, ChangeEvent, useEffect } from "react";
 import { Map,Marker,TileLayer } from 'react-leaflet';
 import {LeafletMouseEvent} from 'leaflet';
-import { useHistory,useParams} from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
+
 import { Alert } from 'reactstrap'
 
 import { FiPlus, FiAlertCircle } from "react-icons/fi";
@@ -54,6 +55,8 @@ export default function ChangeDoador(){
       setImages(donor.images)
     })
   }, [params.id])
+
+
 
   function handleMapClick(event: LeafletMouseEvent){
     const {lat,lng} = event.latlng;
@@ -159,7 +162,7 @@ function getGeolocalization() {
     })
 
     try {
-      await api.put('doadores',data).then(() => {
+      await api.put(`donor/${params.id}/changed`,data).then(() => {
         alert('Cadastro realizado com sucesso!')
         history.push('/app');
       })

@@ -3,6 +3,7 @@ import { Map,Marker,TileLayer } from 'react-leaflet';
 import {LeafletMouseEvent} from 'leaflet';
 import { useHistory } from "react-router-dom";
 import { Alert } from 'reactstrap'
+import ReactLeafletSearch from "react-leaflet-search";
 
 import { FiPlus, FiAlertCircle } from "react-icons/fi";
 
@@ -246,23 +247,52 @@ function getGeolocalization() {
               />
             </div>
 
-            <div className="input-block">
+            {/*<div className="input-block">
               <button type="button" id="button-c" onClick={() => getGeolocalization()}>
                 Selecione a Localização Geográfica
               </button>
-            </div>
+          </div>*/}
 
-            {mapVisible === true ?
+            <label htmlFor="localization">Selecione a Localização Geográfica</label>
 
-            <div className="input-block">
+            {/*mapVisible === true ?*/}
+
+            <div className="input-block2">
               <Map
-                center={[position.latitude, position.longitude]}
-                style={{ width: '100%', height: 280 }}
+                center={[-7.987880130674069, -38.29668760299683]}
+                style={{ width: '100%', height: 380 }}
                 zoom={15}
                 onclick={handleMapClick}
               >
                 <TileLayer
                   url={`https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
+                />
+
+
+                <ReactLeafletSearch
+                  position="topright"
+                  inputPlaceholder="Buscar"
+                  className="search-map"
+                  showMarker={mapVisible}
+                  zoom={15}
+                  onChange={event => {
+                    const {lat,lng} = event.latLng
+                    setmapVisible(false)
+                    setPosition({
+                      latitude: lat,
+                      longitude: lng
+                    })
+                    setmapVisible(true)
+                  }}
+                  markerIcon={mapIconDoador}
+                  closeResultsOnClick={true}
+                  showPopup={false}
+                  openSearchOnLoad={true}
+                  providerOptions={{region: 'br'}}
+
+                // default provider OpenStreetMap
+                // provider="BingMap"
+                // providerKey="AhkdlcKxeOnNCJ1wRIPmrOXLxtEHDvuWUZhiT4GYfWgfxLthOYXs5lUMqWjQmc27"
                 />
 
                 {position.latitude != 0 && (
@@ -278,8 +308,8 @@ function getGeolocalization() {
                 )}
 
               </Map>
-            </div> : null
-            }
+            </div> {/* : null
+            } */}
   
             <div className="input-block">
               <label htmlFor="images">Fotos</label>

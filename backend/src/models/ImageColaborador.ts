@@ -9,7 +9,10 @@ export default class ImageColaborador{
     @Column()
     path:string;
 
-    @ManyToOne(()=> Colaborador, colaborador => colaborador.images)
+    @ManyToOne(()=> Colaborador, colaborador => colaborador.images, {
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
+    })
     @JoinColumn({name:'colaborador_id'})
     colaborador: Colaborador;
 
