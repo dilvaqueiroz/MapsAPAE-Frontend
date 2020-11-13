@@ -111,9 +111,10 @@ export default{
     },
 
 
-    async change(request: Request ,response: Response){},
+    async change(request: Request ,response: Response){
         // Novo metodo para put (alterar, modificar, editar)
-       /* const {index} = request.params;  // recupera o index com os dados
+        const {id} = request.params;
+
         const {
             name,
             latitude,
@@ -126,17 +127,14 @@ export default{
             opening_hours,
             open_on_weekends, 
         } = request.body;
-    
-        const colaboradoresRepository = getRepository(Colaborador);
 
-        
         const requestImages =request.files as Express.Multer.File[];
 
         const images= requestImages.map(image=>{
             return{path:image.filename}
         })
-    
-        data[index] = {
+
+        const data = {
             name,
             latitude,
             longitude,
@@ -148,9 +146,9 @@ export default{
             opening_hours,
             open_on_weekends: open_on_weekends == 'true',
             images
-        };// sobrepõe o index obtido na rota de acordo com o novo valor
+        };
 
-        const schema =Yup.object().shape({
+        const schema = Yup.object().shape({
             name: Yup.string().required('Nome obrigatório'),
             latitude: Yup.number().required(),
             longitude: Yup.number().required(),
@@ -168,16 +166,20 @@ export default{
             )
         });
 
-        await schema.validate(data[index],{
+        await schema.validate(data,{
             abortEarly:false,
         });
-    
-        const colaborador = colaboradoresRepository.create(data[index]);
-            
-    
-        await colaboradoresRepository.save(colaborador);
-    
-        return response.status(200).json({colaborador});
-        
-    },*/
+
+        const colaboradoresRepository = getRepository(Colaborador);
+
+        const collaborator = await colaboradoresRepository.findOneOrFail(id, {
+            relations: ['images']
+        });
+
+        colaboradoresRepository.merge(collaborator, data);
+
+        await colaboradoresRepository.save(collaborator);
+
+        return response.status(201).json({collaborator})
+    },
 };

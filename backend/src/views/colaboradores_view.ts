@@ -6,6 +6,10 @@ export default{
         return{
             id:colaborador.id,
             name:colaborador.name,
+            cep: colaborador.cep,
+            street: colaborador.street,
+            district: colaborador.district,
+            number: colaborador.number,
 	        latitude:colaborador.latitude,
 	        longitude:colaborador.longitude,
 	        about:colaborador.about,

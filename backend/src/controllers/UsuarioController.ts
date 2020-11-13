@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import{getRepository, Like} from 'typeorm';
+import{getRepository} from 'typeorm';
 import usuarioView from '../views/usuarios_view';
 import * as Yup from 'yup';
 
@@ -105,9 +105,7 @@ export default{
         });
     
         const usuario = usuariosRepository.create(data);
-            
-          
-    
+                
         await usuariosRepository.save(usuario);
     
         return response.status(201).json({usuario});
@@ -117,9 +115,75 @@ export default{
         // Novo metodo para put (alterar, modificar, editar)
         const {id} = request.params;
 
+        const {
+            name,
+            latitude,
+            longitude,
+            cep,
+            street,
+            number,
+            district,
+            about,
+            instructions,
+            opening_hours,
+            open_on_weekends, 
+        } = request.body;
+
+        const requestImages =request.files as Express.Multer.File[];
+
+        const images= requestImages.map(image=>{
+            return{path:image.filename}
+        })
+
+        const data = {
+            name,
+            latitude,
+            longitude,
+            cep,
+            street,
+            number,
+            district,
+            about,
+            instructions,
+            opening_hours,
+            open_on_weekends: open_on_weekends == 'true', 
+            images
+        };
+
+        const schema = Yup.object().shape({
+            name: Yup.string().required('Nome obrigatório'),
+            latitude: Yup.number().required(),
+            longitude: Yup.number().required(),
+            about: Yup.string().required().max(300),
+            cep: Yup.string().required(),
+            street: Yup.string().required(),
+            number: Yup.string().required(),
+            district: Yup.string().required(),
+            instructions: Yup.string().required(),
+            opening_hours: Yup.string().required(),
+            open_on_weekends: Yup.boolean().required(),
+            images:Yup.array(
+                Yup.object().shape({
+                path:Yup.string().required(),
+            })
+            )
+        });
+
+        await schema.validate(data,{
+            abortEarly:false,
+        });
+
         const usuariosRepository = getRepository(Usuario);
 
+        const user = await usuariosRepository.findOneOrFail(id, {
+            relations: ['images']
+        });
 
+        usuariosRepository.merge(user, data);
+
+        await usuariosRepository.save(user);
+
+        return response.status(201).json({user})
     },
 
 };
