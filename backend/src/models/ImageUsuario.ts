@@ -9,7 +9,10 @@ export default class ImageUsuario{
     @Column()
     path:string;
 
-    @ManyToOne(()=> Usuario, usuario => usuario.images)
+    @ManyToOne(()=> Usuario, usuario => usuario.images,{
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
+    })
     @JoinColumn({name:'usuario_id'})
     usuario: Usuario;
 

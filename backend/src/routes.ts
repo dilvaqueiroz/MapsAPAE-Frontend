@@ -25,8 +25,11 @@ routes.post('/usuarios', upload.array('images'),UsuariosController.create);
 routes.post('/doadores',upload.array('images'),DoadoresController.create);
 routes.post('/colaboradores',upload.array('images'),ColaboradoresController.create);
 
-routes.get('/users/:id/change',UsuariosController.show); // ROTAS CHANGE DO EDITAR
-routes.put('/doadores',upload.array('images'),DoadoresController.change);
-routes.put('/colaboradores',upload.array('images'),ColaboradoresController.change);
+routes.put('/users/:id/changed', upload.array('images'),UsuariosController.change);
+routes.get('/users/:id/change',UsuariosController.show);
+routes.put('/donor/:id/changed',upload.array('images'),DoadoresController.change);
+routes.get('/donor/:id/change',DoadoresController.show);
+routes.put('/collaborator/:id/changed',upload.array('images'),ColaboradoresController.change);
+routes.get('/collaborator/:id/change',ColaboradoresController.show);
 
 export default routes;

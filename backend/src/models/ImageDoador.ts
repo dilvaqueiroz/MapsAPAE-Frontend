@@ -9,7 +9,10 @@ export default class ImageDoador{
     @Column()
     path:string;
 
-    @ManyToOne(()=> Doador, doador => doador.images)
+    @ManyToOne(()=> Doador, doador => doador.images, {
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
+    })
     @JoinColumn({name:'doador_id'})
     doador: Doador;
 

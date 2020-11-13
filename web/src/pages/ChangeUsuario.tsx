@@ -13,26 +13,6 @@ import api from "../services/api";
 
 import '../styles/pages/create-usuario.css';
 import mapIconUsuario from "../utils/mapIconUsuario";
-import { JsxEmit } from "typescript";
-import { report } from "process";
-
-interface Usuario {
-  latitude: number;
-  longitude: number;
-  name: string;
-  cep: string;
-  street: string;
-  number: string;
-  district: string;
-  about: string;
-  instructions: string;
-  opening_hours: string;
-  open_on_weekends: boolean;
-  images: Array<{
-    id: number;
-    url: string;
-  }>;
-}
 
 interface UsuarioParams {
   id: string;
@@ -57,10 +37,7 @@ export default function ChangeUsuario() {
   const [images, setImages] = useState<File[]>([]);
   const [previewImages, setPreviewImages] = useState<string[]>([]);
 
-  const cep2 = React.createRef<HTMLInputElement>();
-
   const params = useParams<UsuarioParams>();
-  const [usuario, setUsuario] = useState<Usuario>();
 
   useEffect(() => {
     api.get(`usuarios/${params.id}`).then(response => JSON.stringify(response.data)).then(res => {
@@ -81,16 +58,6 @@ export default function ChangeUsuario() {
       setImages(user.images)
     })
   }, [params.id])
-
-/*   useEffect(() => {
-    if (usuario) {
-      setName(usuario.name)
-    }
-  }) */
-
-/*   if (!usuario) {
-    return <p>Carregando...</p>
-  } */
 
 
   function handleMapClick(event: LeafletMouseEvent) {
@@ -197,8 +164,8 @@ export default function ChangeUsuario() {
     })
 
     try {
-      await api.put(`usuarios/${params.id}/change`, data).then(() => { // modifiquei aqui PUT
-        alert('Cadastro realizado com sucesso!')
+      await api.put(`users/${params.id}/changed`, data).then(() => { // modifiquei aqui PUT
+        alert('Alteração de usuário realizada com sucesso!')
         history.push('/app');
       })
     } catch (e) {

@@ -1,7 +1,7 @@
-import React, { FormEvent, useState, ChangeEvent } from "react";
+import React, { FormEvent, useState, ChangeEvent, useEffect } from "react";
 import { Map,Marker,TileLayer } from 'react-leaflet';
 import {LeafletMouseEvent} from 'leaflet';
-import { useHistory } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { Alert } from 'reactstrap'
 
 import { FiPlus, FiAlertCircle } from "react-icons/fi";
@@ -12,6 +12,10 @@ import mapIconDoador from "../utils/mapIconDoador";
 import api from "../services/api";
 
 import '../styles/pages/create-usuario.css';
+
+interface DoadorParams {
+  id: string;
+}
 
 export default function ChangeDoador(){
 
@@ -30,6 +34,27 @@ export default function ChangeDoador(){
   const [open_on_weekends,setOpenOnWeekends]=useState(true);
   const [images,setImages] = useState<File[]>([]);
   const [previewImages,setPreviewImages] = useState<string[]>([]);
+
+  const params = useParams<DoadorParams>();
+
+  useEffect(() => {
+    api.get(`doadores/${params.id}`).then(response => JSON.stringify(response.data)).then(res => {
+      const donor = JSON.parse(res)
+      setName(donor.name)
+      setCep(donor.cep)
+      setStreet(donor.street)
+      setNumber(donor.number)
+      setDistrict(donor.district)
+      setPosition({
+        latitude: donor.latitude,
+        longitude: donor.longitude
+      })
+      setAbout(donor.about)
+      setOpeningHours(donor.opening_hours)
+      setOpenOnWeekends(donor.open_on_weekends)
+      setImages(donor.images)
+    })
+  }, [params.id])
 
   function handleMapClick(event: LeafletMouseEvent){
     const {lat,lng} = event.latlng;
@@ -135,7 +160,7 @@ function getGeolocalization() {
     })
 
     try {
-      await api.put('doadores',data).then(() => {
+      await api.put(`donor/${params.id}/changed`,data).then(() => {
         alert('Cadastro realizado com sucesso!')
         history.push('/app');
       })
