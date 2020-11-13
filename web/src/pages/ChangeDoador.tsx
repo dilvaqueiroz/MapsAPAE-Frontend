@@ -162,8 +162,8 @@ function getGeolocalization() {
     })
 
     try {
-      await api.put(`donor/${params.id}/changed`,data).then(() => {
-        alert('Cadastro realizado com sucesso!')
+      await api.put(`donors/${params.id}/changed`,data).then(() => {
+        alert('Alteração de cadastro realizada com sucesso!')
         history.push('/app');
       })
     } catch (e) {
