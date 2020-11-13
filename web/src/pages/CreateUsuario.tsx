@@ -257,6 +257,8 @@ export default function CreateUsuario(){
 
             {/*mapVisible === true ?*/}
 
+            <label htmlFor="localization">Selecione a Localização Geográfica</label>
+
             <div className="input-block2">
               <Map
                 center={[-7.987880130674069, -38.29668760299683]}
