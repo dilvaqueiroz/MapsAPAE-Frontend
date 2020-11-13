@@ -56,27 +56,6 @@ export default function ChangeDoador(){
     })
   }, [params.id])
 
-  const params = useParams<DoadorParams>();
-
-  useEffect(() => {
-    api.get(`doadores/${params.id}`).then(response => JSON.stringify(response.data)).then(res => {
-      const donor = JSON.parse(res)
-      setName(donor.name)
-      setCep(donor.cep)
-      setStreet(donor.street)
-      setNumber(donor.number)
-      setDistrict(donor.district)
-      setPosition({
-        latitude: donor.latitude,
-        longitude: donor.longitude
-      })
-      setAbout(donor.about)
-      setOpeningHours(donor.opening_hours)
-      setOpenOnWeekends(donor.open_on_weekends)
-      setImages(donor.images)
-    })
-  }, [params.id])
-
   function handleMapClick(event: LeafletMouseEvent){
     const {lat,lng} = event.latlng;
     setPosition({
@@ -182,7 +161,7 @@ function getGeolocalization() {
 
     try {
       await api.put(`donor/${params.id}/changed`,data).then(() => {
-        alert('Cadastro realizado com sucesso!')
+        alert('Alteração de cadastro realizada com sucesso!')
         history.push('/app');
       })
     } catch (e) {

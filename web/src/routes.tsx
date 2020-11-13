@@ -30,8 +30,8 @@ function Routes(){
                 <Route path="/doadores/:id" component={Doador}/>
                 <Route path="/colaboradores/:id" component={Colaborador}/>
                 <Route path="/users/:id/change" component={ChangeUsuario}/> 
-                <Route path="/doadores/change/:id" component={ChangeDoador}/>
-                <Route path="/colaboradores/change/:id" component={ChangeColaborador}/>
+                <Route path="/donors/:id/change" component={ChangeDoador}/>
+                <Route path="/collaborators/:id/change" component={ChangeColaborador}/>
             </Switch>
         </BrowserRouter>
     );
