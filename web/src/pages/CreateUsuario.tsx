@@ -271,7 +271,7 @@ export default function CreateUsuario(){
                   url={`https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
                 />
 
-                <ReactLeafletSearch
+                  <ReactLeafletSearch
                   position="topright"
                   inputPlaceholder="Buscar"
                   className="search-map"
@@ -291,6 +291,7 @@ export default function CreateUsuario(){
                   showPopup={false}
                   openSearchOnLoad={true}
                   providerOptions={{region: 'br'}}
+
 
                 // default provider OpenStreetMap
                 // provider="BingMap"
