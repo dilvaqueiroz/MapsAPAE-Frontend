@@ -1,9 +1,13 @@
 # MapsAPAE
 Aplicativo construído para APAE-Serra Talhada, realização cadastro de endereços, mapeamento e rotas dos colaboradores, doadores e usuários da associação
 
-### Instalação
+### Tecnologias 
 
-O projeto requer o [Node.js](https://nodejs.org/) instalado na sua máquina.
+  - [Node.js](https://nodejs.org/en/)
+  - [React](https://reactjs.org/)
+  - [TypeScript](https://www.typescriptlang.org/)
+
+### Instalação
 
 Para Instalar todas as dependências do projeto use:
 
