@@ -95,7 +95,7 @@ export default{
             open_on_weekends: Yup.boolean().required(),
             images:Yup.array(
                 Yup.object().shape({
-                path:Yup.string(),
+                path:Yup.string().required(),
             })
             )
         });
