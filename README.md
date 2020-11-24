@@ -1,10 +1,10 @@
-MapsAPAE
+# MapsAPAE
 
 
 
 ### Instalação
 
-o projeto requer o [Node.js](https://nodejs.org/) instalado na sua máquina.
+O projeto requer o [Node.js](https://nodejs.org/) instalado na sua máquina.
 
 Para Instalar todas as dependências do projeto use:
 
