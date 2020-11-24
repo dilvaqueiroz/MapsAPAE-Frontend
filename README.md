@@ -29,11 +29,13 @@ Para iniciar e contribuir com o projeto use as seguintes linhas de comando
 
 Para iniciar aplicativo web:
 ```sh
+$ cd web
 $ npm start
 ```
 
 Para iniciar o backend use:
 
 ```sh
+$ cd backend
 $ npm run dev
 ```
