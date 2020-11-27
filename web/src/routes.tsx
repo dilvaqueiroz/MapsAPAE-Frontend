@@ -13,25 +13,26 @@ import UsuarioMap from './pages/UsuarioMap';
 import ChangeUsuario from './pages/ChangeUsuario';
 import ChangeDoador from './pages/ChangeDoador';
 import ChangeColaborador from './pages/ChangeColaborador';
+import Login from './pages/Login';
 
 
 
-function Routes(){
-    return(
+function Routes() {
+    return (
         <BrowserRouter>
             <Switch>
-                <Route path="/" exact component={Landing}/>
-                <Route path="/app" component={UsuarioMap}/>
-                <Route path="/selection" component={Selection}/>
-                <Route path="/usuarios/create" component={CreateUsuario}/>
-                <Route path="/doadores/create" component={CreateDoador}/>
-                <Route path="/colaboradores/create" component={CreateColaborador}/>
-                <Route path="/usuarios/:id" component={Usuario}/>
-                <Route path="/doadores/:id" component={Doador}/>
-                <Route path="/colaboradores/:id" component={Colaborador}/>
-                <Route path="/users/:id/change" component={ChangeUsuario}/> 
-                <Route path="/donors/:id/change" component={ChangeDoador}/>
-                <Route path="/collaborators/:id/change" component={ChangeColaborador}/>
+                <Route path="/" exact component={Landing} />
+                <Route path="/app" component={UsuarioMap} />
+                <Route path="/selection" component={Selection} />
+                <Route path="/usuarios/create" component={CreateUsuario} />
+                <Route path="/doadores/create" component={CreateDoador} />
+                <Route path="/colaboradores/create" component={CreateColaborador} />
+                <Route path="/usuarios/:id" component={Usuario} />
+                <Route path="/doadores/:id" component={Doador} />
+                <Route path="/colaboradores/:id" component={Colaborador} />
+                <Route path="/users/:id/change" component={ChangeUsuario} />
+                <Route path="/donors/:id/change" component={ChangeDoador} />
+                <Route path="/collaborators/:id/change" component={ChangeColaborador} />
             </Switch>
         </BrowserRouter>
     );
