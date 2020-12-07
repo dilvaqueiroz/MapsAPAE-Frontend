@@ -1,14 +1,17 @@
-import React from 'react';
-
-
+import React from 'react'
+import {AuthProvider} from './contexts/auth';
 import './styles/global.css';
 import 'leaflet/dist/leaflet.css';
+import Routes from './routes/index';
+import { BrowserRouter } from 'react-router-dom';
 
-import Routes from './routes'
-
-function App() {
+const App:React.FC = () => {
   return (
-    <Routes/>
+    <BrowserRouter>
+     <AuthProvider>
+        <Routes/>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 

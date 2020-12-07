@@ -1,20 +1,21 @@
 import React, { FormEvent, useState, ChangeEvent } from "react";
 import { Map,Marker,TileLayer } from 'react-leaflet';
-import {LeafletMouseEvent} from 'leaflet';
+import {LatLng, LeafletMouseEvent} from 'leaflet';
 import { useHistory } from "react-router-dom";
 import { Alert } from 'reactstrap'
-
-import {FiPlus, FiAlertCircle } from "react-icons/fi";
 import ReactLeafletSearch from "react-leaflet-search";
 
+import {FiPlus, FiAlertCircle } from "react-icons/fi";
 
-import Sidebar from "../components/Sidebar";
-import api from "../services/api";
 
-import '../styles/pages/create-usuario.css';
-import mapIconUsuario from "../utils/mapIconUsuario";
+import Sidebar from "../../components/Sidebar";
+import api from "../../services/api";
 
-export default function CreateUsuario(){
+import '../../styles/pages/create-usuario.css';
+import mapIconColaborador from "../../utils/mapIconColaborador";
+
+//export default function CreateColaborador(){
+  const CreateColaborador: React.FC = () => {
 
   const history=useHistory();
   const [position,setPosition] = useState({latitude:0,longitude:0});
@@ -29,7 +30,6 @@ export default function CreateUsuario(){
   const [visible, setVisible] = useState(false);
   const [mapVisible, setmapVisible] = useState(false);
   const [open_on_weekends,setOpenOnWeekends]=useState(true);
-  const [instructions,setInstructions]=useState('');
   const [images,setImages] = useState<File[]>([]);
   const [previewImages,setPreviewImages] = useState<string[]>([]);
 
@@ -39,6 +39,7 @@ export default function CreateUsuario(){
       latitude:lat,
       longitude:lng,
     });
+    setmapVisible(false)
   }
 
   function handleSelectImages(event: ChangeEvent<HTMLInputElement>){
@@ -111,6 +112,8 @@ export default function CreateUsuario(){
         }))
       setmapVisible(true)
     }
+
+    console.log(cep)
   }
 
   async function handleSubmit(event:FormEvent){
@@ -128,16 +131,15 @@ export default function CreateUsuario(){
     data.append('about',about);
     data.append('latitude',String(latitude));
     data.append('longitude',String(longitude));
-    data.append('instructions',instructions);
     data.append('opening_hours',opening_hours);
     data.append('open_on_weekends',String(open_on_weekends));
     
     images.forEach(image =>{
-      data.append('images',image);
+      data.append('imagesColaboradores',image);
     })
 
     try {
-      await api.post('usuarios',data).then(() => {
+      await api.post('colaboradores',data).then(() => {
         alert('Cadastro realizado com sucesso!')
         history.push('/app');
       })
@@ -166,10 +168,10 @@ export default function CreateUsuario(){
       <main>
         <form onSubmit={handleSubmit} className="create-usuario-form">
           <fieldset>
-            <legend>Dados do Usuário</legend>
+            <legend>Dados do Colaborador</legend>
 
             <div className="input-block">
-              <label htmlFor="name">Nome do Usuário</label>
+              <label htmlFor="name">Nome do Colaborador</label>
               <input 
                 id="name"
                 value={name}
@@ -249,15 +251,15 @@ export default function CreateUsuario(){
               />
             </div>
 
-            {/*<div className="input-block">
+            {/* <div className="input-block">
               <button type="button" id="button-c" onClick={() => getGeolocalization()}>
-                Selecione a Localização Geográfica
+                  Selecione a Localização Geográfica
               </button>
-          </div>*/}
-
-            {/*mapVisible === true ?*/}
+            </div> */}
 
             <label htmlFor="localization">Selecione a Localização Geográfica</label>
+
+            {/* {mapVisible === true ? */}
 
             <div className="input-block2">
               <Map
@@ -265,13 +267,12 @@ export default function CreateUsuario(){
                 style={{ width: '100%', height: 380 }}
                 zoom={15}
                 onclick={handleMapClick}
-                
               >
                 <TileLayer
                   url={`https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
                 />
 
-                  <ReactLeafletSearch
+                <ReactLeafletSearch
                   position="topright"
                   inputPlaceholder="Buscar"
                   className="search-map"
@@ -286,12 +287,11 @@ export default function CreateUsuario(){
                     })
                     setmapVisible(true)
                   }}
-                  markerIcon={mapIconUsuario}
+                  markerIcon={mapIconColaborador}
                   closeResultsOnClick={true}
                   showPopup={false}
                   openSearchOnLoad={true}
                   providerOptions={{region: 'br'}}
-
 
                 // default provider OpenStreetMap
                 // provider="BingMap"
@@ -302,7 +302,7 @@ export default function CreateUsuario(){
 
                   <Marker
                     interactive={false}
-                    icon={mapIconUsuario}
+                    icon={mapIconColaborador}
                     position={[
                       position.latitude,
                       position.longitude
@@ -312,7 +312,7 @@ export default function CreateUsuario(){
 
               </Map>
             </div> {/* : null
-            }*/} 
+            } */}
 
                 
             <div className="input-block">
@@ -336,22 +336,14 @@ export default function CreateUsuario(){
           <fieldset>
             <legend>Visitação</legend>
 
-            <div className="input-block">
-              <label htmlFor="instructions">Instruções Quando Não Houver Alguém em Casa</label>
-              <textarea
-               id="instructions" 
-               value={instructions} 
-               onChange={event => setInstructions(event.target.value)}
-               />
-            </div>
-
 
             <div className="input-block">
               <label htmlFor="opening_hours">Horários Disponiveis para Atendimento</label>
               <input 
                 id="opening_hours"
                 value={opening_hours} 
-                onChange={event => setOpeningHours(event.target.value)}
+                onChange={event => {console.log(position.latitude, position.longitude) 
+                  setOpeningHours(event.target.value)}}
               />
             </div>
 
@@ -385,3 +377,5 @@ export default function CreateUsuario(){
     </div>
   );
 }
+
+export default CreateColaborador;

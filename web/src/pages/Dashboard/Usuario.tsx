@@ -3,13 +3,14 @@ import { FiClock, FiInfo} from "react-icons/fi";
 import { Map, Marker, TileLayer } from "react-leaflet";
 import {useParams, Link} from 'react-router-dom';
 
-import '../styles/pages/changes.css';
-import '../styles/pages/usuario.css';
-import Sidebar from "../components/Sidebar";
-import mapIconUsuario from "../utils/mapIconUsuario";
+import '../../styles/pages/usuario.css';
+import '../../styles/pages/changes.css';
+
+import Sidebar from "../../components/Sidebar";
+import mapIconUsuario from "../../utils/mapIconUsuario";
 import { useEffect } from "react";
 import { useState } from "react";
-import api from "../services/api";
+import api from "../../services/api";
 
 interface Usuario{
   latitude:number;
@@ -33,7 +34,8 @@ interface UsuarioParams{
   id:string;
 }
 
-export default function Usuario() {
+//export default function Usuario() {
+const Usuario: React.FC = () => {
 
   const params= useParams<UsuarioParams>();
   const [usuario,setUsuario] = useState<Usuario>();
@@ -145,3 +147,5 @@ if(!usuario){
     </div>
   );
 }
+
+export default Usuario;

@@ -8,17 +8,18 @@ import { Alert } from 'reactstrap'
 import { FiPlus, FiAlertCircle } from "react-icons/fi";
 
 
-import Sidebar from "../components/Sidebar";
-import mapIconDoador from "../utils/mapIconDoador";
-import api from "../services/api";
+import Sidebar from "../../components/Sidebar";
+import mapIconDoador from "../../utils/mapIconDoador";
+import api from "../../services/api";
 
-import '../styles/pages/create-usuario.css';
+import '../../styles/pages/create-usuario.css';
 
 interface DoadorParams{
   id: string;
 }
 
-export default function ChangeDoador(){
+//export default function ChangeDoador(){
+  const ChangeDoador: React.FC = () => {
 
   const history=useHistory();
   const [position,setPosition] = useState({latitude:0,longitude:0});
@@ -368,3 +369,5 @@ function getGeolocalization() {
     </div>
   );
 }
+
+export default ChangeDoador;
