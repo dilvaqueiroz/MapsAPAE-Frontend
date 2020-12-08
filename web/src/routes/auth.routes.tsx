@@ -5,7 +5,7 @@ import Landing from '../pages/SignIn/Index';
 const AuthRoutes: React.FC = () => (
     <Switch>
         <BrowserRouter>
-            <Route path="/" exact component={Landing} />
+            <Route exact  path="/" component={Landing} />
         </BrowserRouter>
     </Switch>
 );

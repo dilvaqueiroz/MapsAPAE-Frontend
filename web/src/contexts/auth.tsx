@@ -2,7 +2,9 @@ import React, {createContext, useState, useEffect, useContext} from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 import api from '../services/api';
 import * as  auth from '../services/auth';
-import { Alert } from 'reactstrap'
+import { Alert } from 'reactstrap';
+import { Redirect } from 'react-router-dom';
+
 
 interface User{
     name: string;
@@ -47,6 +49,11 @@ export const AuthProvider: React.FC = ({children}) => {
     
             await AsyncStorage.setItem('@RNAuth:user', JSON.stringify(response.user));
             await AsyncStorage.setItem('@RNAuth:token', response.token);
+ 
+            {/*<Redirect to={{
+                pathname:'/app',
+            }} />*/}
+
         } else {
                 //Alert
         }

@@ -1,21 +1,21 @@
-import { stringify } from 'querystring';
-import React, {useState} from 'react';
-import {FiArrowRight} from 'react-icons/fi';
-import {Link} from 'react-router-dom';
+import React, {useState,Component} from 'react';
+import {FiLogIn} from 'react-icons/fi';
 import logoImg from '../../images/logo.png';
+import {useAuth} from '../../contexts/auth';
 import  '../../styles/pages/landing.css';
-
-function initialState() {
-    return { user: '', password: stringify}
-}
+import { Redirect } from 'react-router-dom';
 
 
 const Landing: React.FC = () => {
 
-  const [user, setUser] = useState(initialState().user)
-  const [password, setPassword] = useState(initialState().password)
+  const {signed, signIn} = useAuth();
+  const [user, setUser] = useState('');
+  const [password, setPassword] = useState('');
 
- 
+    function handleSignIn() {
+      signIn(user, password);
+    }
+
 
     return(
         <div id="page-landing">
@@ -32,17 +32,42 @@ const Landing: React.FC = () => {
   
             <div className="location">
               <label htmlFor="user">Login:  </label>
-              <input id="user" type="text" name="user" value={user} onChange={event => setUser(event.target.value)} />
-              <label htmlFor="password">Senha:  </label>
-              <input id="password" type="password" name="password" value={password} onChange={event => setPassword(event.target.value)} />
-              <Link to="/app" className="enter-app">
+
+              <input 
+              id="user" 
+              type="text" 
+              value={user} 
+              onChange={event => setUser(event.target.value)} 
+              />
+
+              <label htmlFor="password">Senha:</label>
+              
+              <input 
+              id="password" 
+              type="password" 
+              value={password} 
+              onChange={event => setPassword(event.target.value)} 
+              />
+
+              <button className="enter-app" type="submit" onClick={handleSignIn} >
+                <FiLogIn size={20} color="rgba(0,0,0,0.6)"></FiLogIn>
+                Entrar
+              </button>
+
+              {/*<Link to="/app" className="enter-app">
               <FiArrowRight size={26} color="rgba(0,0,0,0.6)">Entrar</FiArrowRight>
-              </Link>
+                </Link>*/}
+
             </div>
+
             <div className="content-footer">
-            <strong>Serra Talhada</strong>
-            <span>Pernambuco</span>
+              <strong>Serra Talhada</strong>
+              <span>Pernambuco</span>
             </div>
+
+            <Redirect to={{
+        pathname:'/App',
+      }} />
         </div>
       </div>
     );

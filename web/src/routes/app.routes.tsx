@@ -13,21 +13,20 @@ import ChangeUsuario from '../pages/Dashboard/ChangeUsuario';
 import ChangeDoador from '../pages/Dashboard/ChangeDoador';
 import ChangeColaborador from '../pages/Dashboard/ChangeColaborador';
 
-
 const AppRoutes: React.FC = () => (
             <Switch>
                 <BrowserRouter>
-                <Route path="/app" component={NavigationMap} />
-                <Route path="/selection" component={Selection} />
-                <Route path="/usuarios/create" component={CreateUsuario} />
-                <Route path="/doadores/create" component={CreateDoador} />
-                <Route path="/colaboradores/create" component={CreateColaborador} />
-                <Route path="/usuarios/:id" component={Usuario} />
-                <Route path="/doadores/:id" component={Doador} />
-                <Route path="/colaboradores/:id" component={Colaborador} />
-                <Route path="/users/:id/change" component={ChangeUsuario} />
-                <Route path="/donors/:id/change" component={ChangeDoador} />
-                <Route path="/collaborators/:id/change" component={ChangeColaborador} />
+                    <Route exact path="/app" component={NavigationMap} />
+                    <Route exact path="/selection" component={Selection} />
+                    <Route exact path="/usuarios/create" component={CreateUsuario} />
+                    <Route exact path="/doadores/create" component={CreateDoador} />
+                    <Route exact path="/colaboradores/create" component={CreateColaborador} />
+                    <Route exact path="/usuarios/:id" component={Usuario} />
+                    <Route exact path="/doadores/:id" component={Doador} />
+                    <Route exact path="/colaboradores/:id" component={Colaborador} />
+                    <Route exact path="/users/:id/change" component={ChangeUsuario} />
+                    <Route exact path="/donors/:id/change" component={ChangeDoador} />
+                    <Route exact path="/collaborators/:id/change" component={ChangeColaborador} />
                 </BrowserRouter>
             </Switch>
     );
