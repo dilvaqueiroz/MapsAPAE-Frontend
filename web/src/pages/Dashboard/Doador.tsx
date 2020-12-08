@@ -1,26 +1,24 @@
 import React from "react";
 import { FiClock, FiInfo} from "react-icons/fi";
 import { Map, Marker, TileLayer } from "react-leaflet";
-import {useParams, Link} from 'react-router-dom';
+import {useParams,Link} from 'react-router-dom';
 
-import '../styles/pages/changes.css';
-import '../styles/pages/usuario.css';
-import Sidebar from "../components/Sidebar";
-import mapIconUsuario from "../utils/mapIconUsuario";
+import '../../styles/pages/usuario.css';
+import Sidebar from "../../components/Sidebar";
+import mapIconDoador from "../../utils/mapIconDoador";
 import { useEffect } from "react";
 import { useState } from "react";
-import api from "../services/api";
+import api from "../../services/api";
 
-interface Usuario{
+interface Doador{
   latitude:number;
   longitude:number;
   name:string;
   cep:string;
-  street: string;
+  street:string;
   number:string;
   district:string;
   about:string;
-  instructions:string;
   opening_hours:string;
   open_on_weekends:boolean;
   images:Array<{
@@ -29,24 +27,25 @@ interface Usuario{
   }>;
 }
 
-interface UsuarioParams{
+interface DoadorParams{
   id:string;
 }
 
-export default function Usuario() {
+//export default function Doador() {
+  const Doador: React.FC = () => {
 
-  const params= useParams<UsuarioParams>();
-  const [usuario,setUsuario] = useState<Usuario>();
+  const params= useParams<DoadorParams>();
+  const [doador,setDoador] = useState<Doador>();
   const [activeImageIndex,setActivateImageIndex] = useState(0);
   
 
   useEffect(() =>{
-      api.get(`usuarios/${params.id}`).then(response =>{ 
-         setUsuario(response.data);
+      api.get(`doadores/${params.id}`).then(response =>{
+         setDoador(response.data);
       })
   },[params.id]);
 
-if(!usuario){
+if(!doador){
   return <p>Carregando...</p>
 }
 
@@ -56,43 +55,42 @@ if(!usuario){
 
       <main>
         <div className="usuario-details">
-          <img src={usuario.images[activeImageIndex].url} alt={usuario.name} />
+          <img src={doador.images[activeImageIndex].url} alt={doador.name} />
 
           <div className="images">
-           {usuario.images.map((image,index) => {
+           {doador.images.map((image,index) => {
              return(
               <button 
                 key={image.id} 
-                className={activeImageIndex === index ? 'active' : ''}
+                className={activeImageIndex == index ? 'active' : ''}
                 type="button"
                 onClick={()=>{
                   setActivateImageIndex(index);
                 }}
               >
-                <img src={image.url} alt={usuario.name} />
+                <img src={image.url} alt={doador.name} />
               </button>
              );
            })}
-                 
+            
           </div>
           
           <div className="usuario-details-content">
             <div className="div-change">
-            <h1>{usuario.name}</h1>
-              <Link to={`/users/${params.id}/change`} className="config-button-change">
+              <h1>{doador.name}</h1>
+              <Link to={`/donors/${params.id}/change`} className="config-button-change">
                       Editar
               </Link>
               
             </div>
-            <p>{usuario.district}</p>
-            <p>{usuario.street}</p>
-            <p>{usuario.number}</p>
-            <p>{usuario.about}</p>
-            
+            <p>{doador.district}</p>
+            <p>{doador.street}</p>
+            <p>{doador.number}</p>
+            <p>{doador.about}</p>
 
             <div className="map-container">
               <Map 
-                center={[usuario.latitude,usuario.longitude]} 
+                center={[doador.latitude,doador.longitude]} 
                 zoom={16} 
                 style={{ width: '100%', height: 280 }}
                 dragging={false}
@@ -104,26 +102,25 @@ if(!usuario){
                 <TileLayer 
                   url={`https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
                 />
-                <Marker interactive={false} icon={mapIconUsuario} position={[usuario.latitude,usuario.longitude]} />
+                <Marker interactive={false} icon={mapIconDoador} position={[doador.latitude,doador.longitude]} />
               </Map>
 
               <footer>
-                <a target="blank" rel="noopener noreferrer"  href={`https://www.google.com/maps/dir/?api=1&destination=${usuario.latitude},${usuario.longitude}`}>Ver rotas no Google Maps</a>
+                <a target="blank" rel="noopener noreferrer"  href={`https://www.google.com/maps/dir/?api=1&destination=${doador.latitude},${doador.longitude}`}>Ver rotas no Google Maps</a>
               </footer>
             </div>
 
             <hr />
 
             <h2>Instruções para visita</h2>
-            <p>{usuario.instructions}</p>
 
             <div className="open-details">
               <div className="hour">
                 <FiClock size={32} color="#15B6D6" />
                 Segunda à Sexta <br />
-                {usuario.opening_hours}
+                {doador.opening_hours}
               </div>
-              {usuario.open_on_weekends ? (
+              {doador.open_on_weekends ? (
                 <div className="open-on-weekends">
                   <FiInfo size={32} color="#39CC83" />
                   Estamos em casa <br />
@@ -136,12 +133,12 @@ if(!usuario){
                   fim de semana
                 </div>
                 )}
-
               </div>
-              
           </div>
         </div>
       </main>
     </div>
   );
 }
+
+export default Doador;

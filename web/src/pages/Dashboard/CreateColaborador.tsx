@@ -1,23 +1,21 @@
-import React, { FormEvent, useState, ChangeEvent,useEffect} from "react";
+import React, { FormEvent, useState, ChangeEvent } from "react";
 import { Map,Marker,TileLayer } from 'react-leaflet';
-import {LeafletMouseEvent} from 'leaflet';
-import { useHistory,useParams} from "react-router-dom";
+import {LatLng, LeafletMouseEvent} from 'leaflet';
+import { useHistory } from "react-router-dom";
 import { Alert } from 'reactstrap'
+import ReactLeafletSearch from "react-leaflet-search";
 
 import {FiPlus, FiAlertCircle } from "react-icons/fi";
 
 
-import Sidebar from "../components/Sidebar";
-import api from "../services/api";
+import Sidebar from "../../components/Sidebar";
+import api from "../../services/api";
 
-import '../styles/pages/create-usuario.css';
-import mapIconColaborador from "../utils/mapIconColaborador";
+import '../../styles/pages/create-usuario.css';
+import mapIconColaborador from "../../utils/mapIconColaborador";
 
-interface ColaboradorParams {
-  id: string;
-}
-
-export default function ChangeColaborador(){
+//export default function CreateColaborador(){
+  const CreateColaborador: React.FC = () => {
 
   const history=useHistory();
   const [position,setPosition] = useState({latitude:0,longitude:0});
@@ -34,26 +32,6 @@ export default function ChangeColaborador(){
   const [open_on_weekends,setOpenOnWeekends]=useState(true);
   const [images,setImages] = useState<File[]>([]);
   const [previewImages,setPreviewImages] = useState<string[]>([]);
-  const params = useParams<ColaboradorParams>();
-
-  useEffect(() => {
-    api.get(`colaboradores/${params.id}`).then(response => JSON.stringify(response.data)).then(res => {
-      const collaborator = JSON.parse(res)
-      setName(collaborator.name)
-      setCep(collaborator.cep)
-      setStreet(collaborator.street)
-      setNumber(collaborator.number)
-      setDistrict(collaborator.district)
-      setPosition({
-        latitude: collaborator.latitude,
-        longitude: collaborator.longitude
-      })
-      setAbout(collaborator.about)
-      setOpeningHours(collaborator.opening_hours)
-      setOpenOnWeekends(collaborator.open_on_weekends)
-      setImages(collaborator.images)
-    })
-  }, [params.id])
 
   function handleMapClick(event: LeafletMouseEvent){
     const {lat,lng} = event.latlng;
@@ -61,6 +39,7 @@ export default function ChangeColaborador(){
       latitude:lat,
       longitude:lng,
     });
+    setmapVisible(false)
   }
 
   function handleSelectImages(event: ChangeEvent<HTMLInputElement>){
@@ -156,12 +135,12 @@ export default function ChangeColaborador(){
     data.append('open_on_weekends',String(open_on_weekends));
     
     images.forEach(image =>{
-      data.append('images',image);
+      data.append('imagesColaboradores',image);
     })
 
     try {
-      await api.put(`/collaborators/${params.id}/changed`, data).then(() => {
-        alert('Alteração de cadastro realizada com sucesso!')
+      await api.post('colaboradores',data).then(() => {
+        alert('Cadastro realizado com sucesso!')
         history.push('/app');
       })
     } catch (e) {
@@ -272,23 +251,51 @@ export default function ChangeColaborador(){
               />
             </div>
 
-            <div className="input-block">
+            {/* <div className="input-block">
               <button type="button" id="button-c" onClick={() => getGeolocalization()}>
-                Selecione a Localização Geográfica
+                  Selecione a Localização Geográfica
               </button>
-            </div>
+            </div> */}
 
-            {mapVisible === true ?
+            <label htmlFor="localization">Selecione a Localização Geográfica</label>
 
-            <div className="input-block">
+            {/* {mapVisible === true ? */}
+
+            <div className="input-block2">
               <Map
-                center={[position.latitude, position.longitude]}
-                style={{ width: '100%', height: 280 }}
+                center={[-7.987880130674069, -38.29668760299683]}
+                style={{ width: '100%', height: 380 }}
                 zoom={15}
                 onclick={handleMapClick}
               >
                 <TileLayer
                   url={`https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
+                />
+
+                <ReactLeafletSearch
+                  position="topright"
+                  inputPlaceholder="Buscar"
+                  className="search-map"
+                  showMarker={mapVisible}
+                  zoom={15}
+                  onChange={event => {
+                    const {lat,lng} = event.latLng
+                    setmapVisible(false)
+                    setPosition({
+                      latitude: lat,
+                      longitude: lng
+                    })
+                    setmapVisible(true)
+                  }}
+                  markerIcon={mapIconColaborador}
+                  closeResultsOnClick={true}
+                  showPopup={false}
+                  openSearchOnLoad={true}
+                  providerOptions={{region: 'br'}}
+
+                // default provider OpenStreetMap
+                // provider="BingMap"
+                // providerKey="AhkdlcKxeOnNCJ1wRIPmrOXLxtEHDvuWUZhiT4GYfWgfxLthOYXs5lUMqWjQmc27"
                 />
 
                 {position.latitude != 0 && (
@@ -304,8 +311,8 @@ export default function ChangeColaborador(){
                 )}
 
               </Map>
-            </div> : null
-            }
+            </div> {/* : null
+            } */}
 
                 
             <div className="input-block">
@@ -335,7 +342,8 @@ export default function ChangeColaborador(){
               <input 
                 id="opening_hours"
                 value={opening_hours} 
-                onChange={event => setOpeningHours(event.target.value)}
+                onChange={event => {console.log(position.latitude, position.longitude) 
+                  setOpeningHours(event.target.value)}}
               />
             </div>
 
@@ -369,3 +377,5 @@ export default function ChangeColaborador(){
     </div>
   );
 }
+
+export default CreateColaborador;
