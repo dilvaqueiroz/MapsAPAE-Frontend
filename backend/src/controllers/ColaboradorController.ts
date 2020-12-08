@@ -2,6 +2,8 @@ import {Request, Response} from 'express';
 import{Any, getRepository} from 'typeorm';
 import colaboradorView from '../views/colaboradores_view';
 import * as Yup from 'yup';
+import sharp from 'sharp';
+import fs from 'fs';
 
 import  Colaborador from '../models/Colaborador';
 
@@ -62,7 +64,32 @@ export default{
         const requestImages =request.files as Express.Multer.File[];
 
         const images= requestImages.map(image=>{
-            return{path:image.filename}
+
+            const newPath = image.path.split('.')[0] + '.webp'
+            const returnPath = image.filename.split('.')[0] + '.webp'
+
+            sharp(image.path)
+                .resize(640, 360)
+                .toFormat('webp')
+                .webp({
+                    quality: 80
+                })
+                .toBuffer()
+                .then(data => {
+                    fs.access(image.path, cb => {
+                        if(!cb){
+                            fs.unlink(image.path, cb => {
+                                if(cb) console.log(cb)
+                            });
+                        }
+                    });
+
+                    fs.writeFile(newPath, data, cb => {
+                        if(cb) throw cb;
+                    });
+                });
+
+            return{path:returnPath}
         })
     
         const data = {
