@@ -63,7 +63,7 @@ if(!usuario){
              return(
               <button 
                 key={image.id} 
-                className={activeImageIndex == index ? 'active' : ''}
+                className={activeImageIndex === index ? 'active' : ''}
                 type="button"
                 onClick={()=>{
                   setActivateImageIndex(index);

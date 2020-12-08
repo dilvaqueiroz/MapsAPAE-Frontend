@@ -2,6 +2,9 @@ import {Request, Response} from 'express';
 import{getRepository, Like} from 'typeorm';
 import doadorView from '../views/doadores_view';
 import * as Yup from 'yup';
+import sharp from 'sharp';
+
+import fs from 'fs';
 
 import  Doador from '../models/Doador';
 
@@ -53,17 +56,43 @@ export default{
             district,
             about,
             opening_hours,
-            open_on_weekends, 
+            open_on_weekends
         } = request.body;
     
         const doadoresRepository = getRepository(Doador);
 
-        
         const requestImages =request.files as Express.Multer.File[];
 
+
         const images= requestImages.map(image=>{
-            return{path:image.filename}
+
+            const newPath = image.path.split('.')[0] + '.webp'
+            const returnPath = image.filename.split('.')[0] + '.webp'
+
+            sharp(image.path)
+                .resize(640, 360)
+                .toFormat('webp')
+                .webp({
+                    quality: 80
+                })
+                .toBuffer()
+                .then(data => {
+                    fs.access(image.path, cb => {
+                        if(!cb){
+                            fs.unlink(image.path, cb => {
+                                if(cb) console.log(cb)
+                            });
+                        }
+                    });
+
+                    fs.writeFile(newPath, data, cb => {
+                        if(cb) throw cb;
+                    });
+                });
+
+            return{path:returnPath}
         })
+
     
         const data = {
             name,
@@ -95,6 +124,9 @@ export default{
                 path:Yup.string(),
             })
             )
+            /* images: Yup.object().shape({
+                path: Yup.string()
+            }) */
         });
 
         await schema.validate(data,{

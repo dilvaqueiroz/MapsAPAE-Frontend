@@ -54,14 +54,15 @@ if(!doador){
 
       <main>
         <div className="usuario-details">
-          <img src={doador.images[activeImageIndex].url} alt={doador.name} />
+
+          <img src={doador.images[activeImageIndex].url} alt={doador.name} />            
 
           <div className="images">
            {doador.images.map((image,index) => {
              return(
               <button 
                 key={image.id} 
-                className={activeImageIndex == index ? 'active' : ''}
+                className={activeImageIndex === index ? 'active' : ''}
                 type="button"
                 onClick={()=>{
                   setActivateImageIndex(index);
