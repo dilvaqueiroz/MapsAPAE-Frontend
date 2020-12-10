@@ -1,7 +1,8 @@
 import React, {FormEvent, useEffect,useState} from 'react';
 import{Link} from 'react-router-dom';
-import {FiPlus,FiArrowRight} from 'react-icons/fi';
+import {FiPlus,FiArrowRight,FiLogOut} from 'react-icons/fi';
 import {Map,TileLayer,Marker,Popup, Circle} from 'react-leaflet';
+import {useAuth} from '../../contexts/auth';
 
 import mapMakerImg from '../../images/logo.png';
 
@@ -35,6 +36,12 @@ interface Colaborador{
 
 //function NavigationMap(){
 const NavigationMap: React.FC = () => {
+
+    const {signOut, user} = useAuth();	
+
+    function handleSignOut(){	
+    signOut();	
+  }
 
     const [usuarios,setUsuario] = useState<Usuario[]>([]);
     const [doadores,setDoador] = useState<Doador[]>([]);
@@ -112,6 +119,9 @@ const NavigationMap: React.FC = () => {
     return(
         <div id="page-map">
             <aside>
+                <button className="out-app" onClick={handleSignOut}>	
+                    <FiLogOut size={20} color="rgba(0,0,0,0.6)"></FiLogOut>	
+                </button>
                 <header>
                     <img src={mapMakerImg} alt="Maps APAE"/>
 
