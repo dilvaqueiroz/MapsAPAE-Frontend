@@ -3,7 +3,6 @@ import {FiLogIn} from 'react-icons/fi';
 import logoImg from '../../images/logo.png';
 import {useAuth} from '../../contexts/auth';
 import  '../../styles/pages/landing.css';
-import { Redirect } from 'react-router-dom';
 
 
 const Landing: React.FC = () => {
@@ -65,9 +64,10 @@ const Landing: React.FC = () => {
               <span>Pernambuco</span>
             </div>
 
-            <Redirect to={{
+         {/*<Redirect to={{
         pathname:'/App',
-      }} />
+      }} /> */} 
+
         </div>
       </div>
     );

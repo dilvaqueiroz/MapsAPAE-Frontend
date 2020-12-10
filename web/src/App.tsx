@@ -8,7 +8,7 @@ import { BrowserRouter } from 'react-router-dom';
 const App:React.FC = () => {
   return (
     <BrowserRouter>
-     <AuthProvider>
+     <AuthProvider >
         <Routes/>
       </AuthProvider>
     </BrowserRouter>

@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import api from '../services/api';
 import * as  auth from '../services/auth';
 import { Alert } from 'reactstrap';
-import { Redirect } from 'react-router-dom';
+import history from '../history';
 
 
 interface User{
@@ -22,7 +22,7 @@ interface AuthContextData{
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 //JTW (Stateless)
 export const AuthProvider: React.FC = ({children}) => {
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<User | null >(null);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -33,7 +33,7 @@ export const AuthProvider: React.FC = ({children}) => {
             if(storagedUser && storagedToken){
                 api.defaults.headers.Authorization = `Bearer ${storagedToken}`;
                 setUser(JSON.parse(storagedUser));
-                setLoading(false); 
+                setLoading(false);
             }
         }
             loadStorageData();
@@ -43,26 +43,27 @@ export const AuthProvider: React.FC = ({children}) => {
         const response = await auth.signIn();
 
         if(name === response.user.name && password === response.user.password){
-            setUser(response.user);
-    
+            setUser(response.user)
             api.defaults.headers.Authorization = `Bearer ${response.token}`;
     
             await AsyncStorage.setItem('@RNAuth:user', JSON.stringify(response.user));
             await AsyncStorage.setItem('@RNAuth:token', response.token);
- 
-            {/*<Redirect to={{
-                pathname:'/app',
-            }} />*/}
 
+            history.push('/app');
+            window.location.reload();
+
+           
         } else {
-                //Alert
+               //Alert             
         }
     }
 
     async function signOut(){
         AsyncStorage.clear().then(()=>{
             setUser(null);
-        });   
+        });  
+        api.defaults.headers.Authorization=undefined;
+        history.push('/'); 
     }
     
     return (
