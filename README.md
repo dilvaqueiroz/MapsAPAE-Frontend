@@ -37,15 +37,9 @@ Criar um arquivo chamado .env na pasta web com a seguinte linha de código `REAC
 
 Para iniciar e contribuir com o projeto use as seguintes linhas de comando
 
-Para iniciar aplicativo web:
+Para iniciar aplicativo:
 ```sh
 $ cd web
 $ npm start
 ```
 
-Para iniciar o backend use:
-
-```sh
-$ cd backend
-$ npm run dev
-```
