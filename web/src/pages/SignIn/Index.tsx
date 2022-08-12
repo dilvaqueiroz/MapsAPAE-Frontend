@@ -1,5 +1,5 @@
 import React, {useState,Component} from 'react';
-import {FiLogIn} from 'react-icons/fi';
+import {FiLogIn,FiEdit} from 'react-icons/fi';
 import logoImg from '../../images/logo.png';
 import {useAuth} from '../../contexts/auth';
 import  '../../styles/pages/landing.css';
@@ -25,7 +25,7 @@ const Landing: React.FC = () => {
             </div>
   
             <main>
-              <h1>Entregas De Atividades Impressas</h1>
+              <h1>Mapeamento geográfico da rede da APAE </h1>
               <p>Colabore com a APAE na sua missão de Educação Inclusiva.</p>
             </main>
   
@@ -33,6 +33,7 @@ const Landing: React.FC = () => {
               <label htmlFor="user">Login:  </label>
 
               <input 
+              className="text-input"
               id="user" 
               type="text" 
               value={user} 
@@ -42,16 +43,24 @@ const Landing: React.FC = () => {
               <label htmlFor="password">Senha:</label>
               
               <input 
+              className="text-input"
               id="password" 
               type="password" 
               value={password} 
               onChange={event => setPassword(event.target.value)} 
               />
 
-              <button className="enter-app" type="submit" onClick={handleSignIn} >
-                <FiLogIn size={20} color="rgba(0,0,0,0.6)"></FiLogIn>
-                Entrar
-              </button>
+              <div className="buttons-location">
+                <button className="registration-app" type="submit"  >
+                  <FiEdit size={20} color="#fff"></FiEdit>
+                  Cadastre-se
+                </button>
+                
+                <button className="enter-app" type="submit" onClick={handleSignIn} >
+                  <FiLogIn size={20} color="#fff"></FiLogIn>
+                  Entrar
+                </button>
+              </div>
 
               {/*<Link to="/app" className="enter-app">
               <FiArrowRight size={26} color="rgba(0,0,0,0.6)">Entrar</FiArrowRight>

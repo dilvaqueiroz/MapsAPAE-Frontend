@@ -1,6 +1,6 @@
 #page-landing{
     width: 100vw;
-    height: 100vh;
+    height: 50vw;
     background: linear-gradient(329.54deg, #1522d6 0%, #1548d6 100%);
 
     display: flex;
@@ -15,14 +15,14 @@
     max-width: 1200px;
 
     height: 100%;
-    max-height: 680px;
+    max-height: 1200px;
 
     display: flex;
     align-items: flex-start;
     flex-direction:column;
     justify-content: space-between;
 
-    background: url(../../images/inclusiva.png) no-repeat 80% center;
+    background: url(../../images/inclusiva.png) no-repeat 65% center;
     
 }
 
@@ -60,22 +60,37 @@
    line-height: 34px;
 }
 
+.text-input{
+    width:250px
+}
 
 .content-wrapper .location{
     position: absolute;
     right: 0;
     top: 0;
     margin-top: 20px;
-    height: 30px;
+    /* height: 30px; */
+    height: 50px;
+    /* gap:2px; */
 
     font-size: 20px;
-    line-height: 34px;
+    line-height: 40px;
 
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
 
     text-align: right;
-    align-items: flex-end;
+    align-items: flex-start;
+}
+.content-wrapper .location .buttons-location{
+    position: relative;
+    gap:20px;
+    
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    text-align: center;
+    align-items: center;
 }
 
 .content-wrapper .location strong{
@@ -86,6 +101,9 @@
     position: relative;
     right: 0;
     bottom:0;
+    margin-top: 10px;
+
+    border: none;
 
     width: 80px;
     height: 30px;
@@ -97,8 +115,34 @@
     justify-content: center;
 
     transition: background-color 0.2s;
+    color: #fff;
 }
 
 .content-wrapper .enter-app:hover{
+    background: #96feff;
+}
+
+.content-wrapper .registration-app{
+    position: relative;
+    right: 0;
+    bottom:0;
+    margin-top: 10px;
+    border: none;
+
+    width: 150px;
+    height: 30px;
+    background: #17d6ed;
+    border-radius: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: background-color 0.2s;
+    font-size: 20px;
+    color: #fff;
+}
+
+.content-wrapper .registration-app:hover{
     background: #96feff;
 }

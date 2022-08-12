@@ -64,10 +64,14 @@
 
  }
 
+ #page-map .create-usuario:hover{
+    background: #96feff;
+ }
+
  #page-map .out-app{
     position: absolute;
     left: 250px;
-    bottom: 80px;
+    bottom: 40px;
 
     border: none;
 
@@ -87,10 +91,6 @@
 }
 
  #page-map .out-app:hover{
-    background: #96feff;
- }
-
- #page-map .create-usuario:hover{
     background: #96feff;
  }
 
