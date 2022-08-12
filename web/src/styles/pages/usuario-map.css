@@ -64,6 +64,32 @@
 
  }
 
+ #page-map .out-app{
+    position: absolute;
+    left: 250px;
+    bottom: 80px;
+
+    border: none;
+
+    z-index: 10;
+
+    width: 64px;
+    height: 64px;
+    background: #15c3d6;
+    border-radius: 28px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    transition: background-color 0.2s;
+
+}
+
+ #page-map .out-app:hover{
+    background: #96feff;
+ }
+
  #page-map .create-usuario:hover{
     background: #96feff;
  }

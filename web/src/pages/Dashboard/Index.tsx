@@ -120,7 +120,7 @@ const NavigationMap: React.FC = () => {
         <div id="page-map">
             <aside>
                 <button className="out-app" onClick={handleSignOut}>	
-                    <FiLogOut size={20} color="rgba(0,0,0,0.6)"></FiLogOut>	
+                    <FiLogOut size={20} color="#fff"></FiLogOut>	
                 </button>
                 <header>
                     <img src={mapMakerImg} alt="Maps APAE"/>
