@@ -19,7 +19,6 @@ Para Instalar todas as dependências do projeto use:
 
 ```sh
 $ npm i
-$ npm install react-icons --save
 ```
 
 
