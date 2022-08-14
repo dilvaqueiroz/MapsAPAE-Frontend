@@ -25,7 +25,7 @@ const Landing: React.FC = () => {
             </div>
   
             <main>
-              <h1>Mapeamento geográfico da rede da APAE </h1>
+              <h1>Mapeamento geográfico da rede APAE</h1>
               <p>Colabore com a APAE na sua missão de Educação Inclusiva.</p>
             </main>
   
