@@ -274,4 +274,16 @@ form.create-usuario-form button.confirm-button:hover {
   color: #e32636;
 }
 
+form.create-usuario-form .input-block select {
+  width: 100%;
+  background: #F5F8FA;
+  border: 1px solid #D3E2E5;
+  border-radius: 20px;
+  outline: none;
+  color: #5C8599;
+  height: 40px;
+  padding: 0 16px;
+  font-size: 16px;
+}
+
 
