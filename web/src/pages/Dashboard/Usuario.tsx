@@ -16,6 +16,7 @@ interface Usuario{
   latitude:number;
   longitude:number;
   name:string;
+  type_user:string;
   cep:string;
   street: string;
   number:string;
@@ -86,6 +87,7 @@ if(!usuario){
               </Link>
               
             </div>
+            <p>{usuario.type_user}</p>
             <p>{usuario.district}</p>
             <p>{usuario.street}</p>
             <p>{usuario.number}</p>

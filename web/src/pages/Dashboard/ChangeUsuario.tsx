@@ -12,7 +12,7 @@ import Sidebar from "../../components/Sidebar";
 import api from "../../services/api";
 
 import '../../styles/pages/create-usuario.css';
-import mapIconUsuario from "../../utils/mapIconUsuario";
+import { getMarkerIcon } from "./CreateUsuario";
 
 interface UsuarioParams {
   id: string;
@@ -24,6 +24,7 @@ interface UsuarioParams {
   const history = useHistory();
   const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
   const [name, setName] = useState('');
+  const [type_user, setTypeUser] = useState('');
   const [about, setAbout] = useState('');
   const [opening_hours, setOpeningHours] = useState('');
   const [cep, setCep] = useState('');
@@ -44,6 +45,7 @@ interface UsuarioParams {
     api.get(`usuarios/${params.id}`).then(response => JSON.stringify(response.data)).then(res => {
       const user = JSON.parse(res)
       setName(user.name)
+      setTypeUser(user.type_user)
       setCep(user.cep)
       setStreet(user.street)
       setNumber(user.number)
@@ -149,6 +151,7 @@ interface UsuarioParams {
     const data = new FormData();
 
     data.append('name', name);
+    data.append('type_user', type_user);
     data.append('cep', cep);
     data.append('street', street);
     data.append('number', number);
@@ -205,7 +208,15 @@ interface UsuarioParams {
               />
 
             </div>
-
+            <div className="input-block">
+                <label htmlFor="type_user">Tipo de Usuário</label>
+                <select id="type_user" value={type_user} onChange={(event) => setTypeUser(event.target.value)}>
+                    <option value="">Selecione</option>
+                    <option value="usuario">Usuário</option>
+                    <option value="colaborador">Colaborador</option>
+                    <option value="doador">Doador</option>
+                </select>
+            </div>
             {error !== '' ?
               <div className="input-block">
                 <Alert className="alerta error" isOpen={visible} >
@@ -300,7 +311,7 @@ interface UsuarioParams {
 
                     <Marker
                       interactive={false}
-                      icon={mapIconUsuario}
+                      icon={getMarkerIcon(type_user)}
                       position={[
                         position.latitude,
                         position.longitude

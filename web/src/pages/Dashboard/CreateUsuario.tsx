@@ -1,390 +1,335 @@
 import React, { FormEvent, useState, ChangeEvent } from "react";
-import { Map,Marker,TileLayer } from 'react-leaflet';
-import {LeafletMouseEvent} from 'leaflet';
+import { Map, Marker, TileLayer } from "react-leaflet";
+import { LeafletMouseEvent } from "leaflet";
 import { useHistory } from "react-router-dom";
-import { Alert } from 'reactstrap'
+import { Alert } from "reactstrap";
 
-import {FiPlus, FiAlertCircle } from "react-icons/fi";
+import { FiPlus, FiAlertCircle } from "react-icons/fi";
 import ReactLeafletSearch from "react-leaflet-search";
-
 
 import Sidebar from "../../components/Sidebar";
 import api from "../../services/api";
 
-import '../../styles/pages/create-usuario.css';
+import "../../styles/pages/create-usuario.css";
 import mapIconUsuario from "../../utils/mapIconUsuario";
+import mapIconColaborador from "../../utils/mapIconColaborador";
+import mapIconDoador from "../../utils/mapIconDoador";
+
+
+
+export function getMarkerIcon(type_user: string): L.Icon {
+  switch (type_user) {
+      case "usuario":
+          return mapIconUsuario;
+      case "colaborador":
+          return mapIconColaborador;
+      case "doador":
+          return mapIconDoador;
+      default:
+          return mapIconUsuario;
+  }
+}
 
 //export default function CreateUsuario(){
 const CreateUsuario: React.FC = () => {
-  
-  const history=useHistory();
-  const [position,setPosition] = useState({latitude:0,longitude:0});
-  const [name, setName]=useState('');
-  const [about,setAbout]=useState('');
-  const [opening_hours,setOpeningHours]=useState('');
-  const [cep,setCep]=useState('');
-  const [street,setStreet]=useState('');
-  const [number,setNumber]=useState('');
-  const [district,setDistrict]=useState('');
-  const [error, setError] = useState('');
-  const [visible, setVisible] = useState(false);
-  const [mapVisible, setmapVisible] = useState(false);
-  const [open_on_weekends,setOpenOnWeekends]=useState(true);
-  const [instructions,setInstructions]=useState('');
-  const [images,setImages] = useState<File[]>([]);
-  const [previewImages,setPreviewImages] = useState<string[]>([]);
+    const history = useHistory();
+    const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
+    const [name, setName] = useState("");
+    const [type_user, setTypeUser] = useState("");
+    const [about, setAbout] = useState("");
+    const [opening_hours, setOpeningHours] = useState("");
+    const [cep, setCep] = useState("");
+    const [street, setStreet] = useState("");
+    const [number, setNumber] = useState("");
+    const [district, setDistrict] = useState("");
+    const [error, setError] = useState("");
+    const [visible, setVisible] = useState(false);
+    const [mapVisible, setmapVisible] = useState(false);
+    const [open_on_weekends, setOpenOnWeekends] = useState(true);
+    const [instructions, setInstructions] = useState("");
+    const [images, setImages] = useState<File[]>([]);
+    const [previewImages, setPreviewImages] = useState<string[]>([]);
 
-  function handleMapClick(event: LeafletMouseEvent){
-    const {lat,lng} = event.latlng;
-    setPosition({
-      latitude:lat,
-      longitude:lng,
-    });
-  }
-
-  function handleSelectImages(event: ChangeEvent<HTMLInputElement>){
-    if(!event.target.files){
-      return;
+    function handleMapClick(event: LeafletMouseEvent) {
+        const { lat, lng } = event.latlng;
+        setPosition({
+            latitude: lat,
+            longitude: lng,
+        });
     }
 
-    const selectedImages = Array.from(event.target.files);
-    
-    setImages(selectedImages);
+    function handleSelectImages(event: ChangeEvent<HTMLInputElement>) {
+        if (!event.target.files) {
+            return;
+        }
 
-    const selectedImagesPreview = selectedImages.map( image=>{
-      return URL.createObjectURL(image);
-    });
+        const selectedImages = Array.from(event.target.files);
 
-    setPreviewImages(selectedImagesPreview);
-  }
+        setImages(selectedImages);
 
-  // máscara para aceitar apenas números e colocar hífen no cep
-  function mCEP(cep:string) {
-    cep = cep.replace(/\D/g,"")
-    cep = cep.replace(/(\d{3})(\d{1,3})$/,"$1-$2")
-    return cep
-  }
+        const selectedImagesPreview = selectedImages.map((image) => {
+            return URL.createObjectURL(image);
+        });
+
+        setPreviewImages(selectedImagesPreview);
+    }
+
+    // máscara para aceitar apenas números e colocar hífen no cep
+    function mCEP(cep: string) {
+        cep = cep.replace(/\D/g, "");
+        cep = cep.replace(/(\d{3})(\d{1,3})$/, "$1-$2");
+        return cep;
+    }
 
     // tempo de aparição do erro
     function alertRegister() {
+        setVisible(true);
 
-      setVisible(true)
-  
-      window.setTimeout(() => {
-        setVisible(false)
-      }, 2000)
+        window.setTimeout(() => {
+            setVisible(false);
+        }, 2000);
     }
 
-  // pega o cep através da api viacep
-  function getCep() {
-    setError('')
+    // pega o cep através da api viacep
+    function getCep() {
+        setError("");
 
-    fetch(`https://viacep.com.br/ws/${cep}/json/`)
-      .then((response) => response.json())
-      .then(resp => {
+        fetch(`https://viacep.com.br/ws/${cep}/json/`)
+            .then((response) => response.json())
+            .then((resp) => {
+                if (JSON.stringify(resp) === '{"erro":true}') {
+                    setError("CEP inválido!");
+                    alertRegister();
+                } else {
+                    setCep(resp.cep);
+                    setStreet(resp.logradouro);
+                    setDistrict(resp.bairro);
+                }
+            })
+            .catch(() => {
+                setError("CEP inválido!");
+                alertRegister();
+            });
+    }
 
-        if(JSON.stringify(resp) === '{"erro":true}') {
-          setError('CEP inválido!')
-          alertRegister()
-        } else {
-          setCep(resp.cep)
-          setStreet(resp.logradouro)
-          setDistrict(resp.bairro)
+    // retorna as informações do endereço como também a latitude e longitude
+    function getGeolocalization() {
+        if (street) {
+            let street1 = street.split(" ").join("+");
+            fetch(`https://nominatim.openstreetmap.org/search?country=Brazil&city=Serra%20Talhada&street=${street1}&limit=1&format=json`)
+                .then((res) => res.json())
+                .then((response) =>
+                    setPosition({
+                        latitude: response[0].lat,
+                        longitude: response[0].lon,
+                    })
+                );
+            setmapVisible(true);
         }
-      })
-      .catch(() => {
-        setError('CEP inválido!')
-        alertRegister()
-      })
-
-  }
-
-  // retorna as informações do endereço como também a latitude e longitude
-  function getGeolocalization() {
-
-    if (street) {
-      let street1 = street.split(" ").join("+")
-      fetch(`https://nominatim.openstreetmap.org/search?country=Brazil&city=Serra%20Talhada&street=${street1}&limit=1&format=json`)
-        .then((res) => res.json())
-        .then((response) => setPosition({
-          latitude: response[0].lat,
-          longitude: response[0].lon
-        }))
-      setmapVisible(true)
-    }
-  }
-
-  async function handleSubmit(event:FormEvent){
-    event.preventDefault();
-
-    const {latitude,longitude} = position;
-
-    const data = new FormData();
-
-    data.append('name',name);
-    data.append('cep',cep);
-    data.append('street',street);
-    data.append('number',number);
-    data.append('district',district);
-    data.append('about',about);
-    data.append('latitude',String(latitude));
-    data.append('longitude',String(longitude));
-    data.append('instructions',instructions);
-    data.append('opening_hours',opening_hours);
-    data.append('open_on_weekends',String(open_on_weekends));
-    
-    images.forEach(image =>{
-      data.append('images',image);
-    })
-
-    try {
-      await api.post('usuarios',data).then(() => {
-        alert('Cadastro realizado com sucesso!')
-        history.push('/app');
-      })
-    } catch (e) {
-      alert('Preencha todos os campos corretamente!');
     }
 
-    //alteração teste
+    async function handleSubmit(event: FormEvent) {
+        event.preventDefault();
 
-  /*  console.log({
-      position,
-      name,
-      about,
-      latitude,
-      longitude,
-      instructions,
-      opening_hours,
-      open_on_weekends,
-      images,
-    })*/
-  }
+        const { latitude, longitude } = position;
 
-  return (
-    <div id="page-create-usuario">
-     <Sidebar/>
-      <main>
-        <form onSubmit={handleSubmit} className="create-usuario-form">
-          <fieldset>
-            <legend>Dados do Usuário</legend>
+        if (!name || !type_user || !cep || !street || !number || !district || !about || !instructions || !opening_hours) {
+          alert("Preencha todos os campos corretamente!");
+          return;
+      }
 
-            <div className="input-block">
-              <label htmlFor="name">Nome do Usuário</label>
-              <input 
-                id="name"
-                value={name}
-                onChange={event => setName(event.target.value)}
-                />
+        const data = new FormData();
 
-            </div>
+        data.append("name", name);
+        data.append("type_user", type_user);
+        data.append("cep", cep);
+        data.append("street", street);
+        data.append("number", number);
+        data.append("district", district);
+        data.append("about", about);
+        data.append("latitude", String(latitude));
+        data.append("longitude", String(longitude));
+        data.append("instructions", instructions);
+        data.append("opening_hours", opening_hours);
+        data.append("open_on_weekends", String(open_on_weekends));
 
-            {error !== '' ?
-              <div className="input-block">
-                <Alert className="alerta error" isOpen={visible} >
-                  <FiAlertCircle className="alertCircle" size={20} />
-                  <div>{error}</div>
-                </Alert>
-              </div> : null
-            }
+        images.forEach((image) => {
+            data.append("images", image);
+        });
 
-            <div className="input-block">
-              <label htmlFor="cep">CEP:</label>
-              <input 
-                id="cep"
-                value={cep}
-                maxLength={9}
-                onChange={event => setCep(mCEP(event.target.value))}
-                />
-            </div>
+        try {
+            await api.post("usuarios", data).then(() => {
+                alert("Cadastro realizado com sucesso!");
+                history.push("/app");
+            });
+        } catch (e) {
+            alert("Erro ao preencher campos!");
+        }
 
-            <div className="input-block">
-              <button
-                type="button" id="button-c" onClick={() => getCep()}>
-                Resgatar Endereço
-              </button>
-            </div>
+        //alteração teste
 
-            <div className="input-block">
-              <label htmlFor="district">Bairro:</label>
-              <input 
-                id="district"
-                value={district}
-                maxLength={50}
-                onChange={event => setDistrict(event.target.value)}
-                />
+    //   console.log({
+    //   position,
+    //   name,
+    //   type_user,
+    //   about,
+    //   latitude,
+    //   longitude,
+    //   instructions,
+    //   opening_hours,
+    //   open_on_weekends,
+    //   images,
+    // })
+    }
 
-            </div>
-
-            <div className="input-block">
-              <label htmlFor="street">Rua:</label>
-              <input
-                id="street"
-                value={street}
-                maxLength={100}
-                disabled={true}
-                onChange={event => setStreet(event.target.value)}
-                />
-
-            </div>
-
-            <div className="input-block">
-              <label htmlFor="number">Número:</label>
-              <input 
-                id="number"
-                value={number}
-                maxLength={4}
-                onChange={event => setNumber(event.target.value)}
-                />
-
-            </div>
-
-
-            <div className="input-block">
-              <label htmlFor="about">Complemento:</label>
-              <textarea 
-                id="name"
-                maxLength={300}
-                value={about} 
-                onChange={event => setAbout(event.target.value)}
-              />
-            </div>
-
-            {/*<div className="input-block">
+    return (
+        <div id="page-create-usuario">
+            <Sidebar />
+            <main>
+                <form onSubmit={handleSubmit} className="create-usuario-form">
+                    <fieldset>
+                        <legend>Dados do Usuário</legend>
+                        <div className="input-block">
+                            <label htmlFor="name">Nome do Usuário</label>
+                            <input id="name" value={name} onChange={(event) => setName(event.target.value)} />
+                        </div>
+                        <div className="input-block">
+                            <label htmlFor="type_user">Tipo de Usuário</label>
+                            <select id="type_user" value={type_user} onChange={(event) => setTypeUser(event.target.value)}>
+                                <option value="">Selecione</option>
+                                <option value="usuario">Usuário</option>
+                                <option value="colaborador">Colaborador</option>
+                                <option value="doador">Doador</option>
+                            </select>
+                        </div>
+                        {error !== "" ? (
+                            <div className="input-block">
+                                <Alert className="alerta error" isOpen={visible}>
+                                    <FiAlertCircle className="alertCircle" size={20} />
+                                    <div>{error}</div>
+                                </Alert>
+                            </div>
+                        ) : null}
+                        <div className="input-block">
+                            <label htmlFor="cep">CEP:</label>
+                            <input id="cep" value={cep} maxLength={9} onChange={(event) => setCep(mCEP(event.target.value))} />
+                        </div>
+                        <div className="input-block">
+                            <button type="button" id="button-c" onClick={() => getCep()}>
+                                Resgatar Endereço
+                            </button>
+                        </div>
+                        <div className="input-block">
+                            <label htmlFor="district">Bairro:</label>
+                            <input id="district" value={district} maxLength={50} onChange={(event) => setDistrict(event.target.value)} />
+                        </div>
+                        <div className="input-block">
+                            <label htmlFor="street">Rua:</label>
+                            <input id="street" value={street} maxLength={100} disabled={true} onChange={(event) => setStreet(event.target.value)} />
+                        </div>
+                        <div className="input-block">
+                            <label htmlFor="number">Número:</label>
+                            <input id="number" value={number} maxLength={4} onChange={(event) => setNumber(event.target.value)} />
+                        </div>
+                        <div className="input-block">
+                            <label htmlFor="about">Complemento:</label>
+                            <textarea id="name" maxLength={300} value={about} onChange={(event) => setAbout(event.target.value)} />
+                        </div>
+                        {/*<div className="input-block">
               <button type="button" id="button-c" onClick={() => getGeolocalization()}>
                 Selecione a Localização Geográfica
               </button>
           </div>*/}
+                        {/*mapVisible === true ?*/}
+                        <label htmlFor="localization">Selecione a Localização Geográfica</label>
+                        <div className="input-block2">
+                            <Map center={[-7.987880130674069, -38.29668760299683]} style={{ width: "100%", height: 380 }} zoom={15} onclick={handleMapClick}>
+                                <TileLayer
+                                    url={`https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
+                                />
 
-            {/*mapVisible === true ?*/}
+                                <ReactLeafletSearch
+                                    position="topright"
+                                    inputPlaceholder="Buscar"
+                                    className="search-map"
+                                    showMarker={mapVisible}
+                                    zoom={15}
+                                    onChange={(event) => {
+                                        const { lat, lng } = event.latLng;
+                                        setmapVisible(false);
+                                        setPosition({
+                                            latitude: lat,
+                                            longitude: lng,
+                                        });
+                                        setmapVisible(true);
+                                    }}
+                                    markerIcon={mapIconUsuario}
+                                    closeResultsOnClick={true}
+                                    showPopup={false}
+                                    openSearchOnLoad={true}
+                                    providerOptions={{ region: "br" }}
 
-            <label htmlFor="localization">Selecione a Localização Geográfica</label>
+                                    // default provider OpenStreetMap
+                                    // provider="BingMap"
+                                    // providerKey="AhkdlcKxeOnNCJ1wRIPmrOXLxtEHDvuWUZhiT4GYfWgfxLthOYXs5lUMqWjQmc27"
+                                />
 
-            <div className="input-block2">
-              <Map
-                center={[-7.987880130674069, -38.29668760299683]}
-                style={{ width: '100%', height: 380 }}
-                zoom={15}
-                onclick={handleMapClick}
-                
-              >
-                <TileLayer
-                  url={`https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
-                />
+                                {position.latitude != 0 && (
+                                    <Marker interactive={false} icon={getMarkerIcon(type_user)} position={[position.latitude, position.longitude]} />
+                                )}
+                            </Map>
+                        </div>{" "}
+                        {/* : null
+            }*/}
+                        <div className="input-block">
+                            <label htmlFor="images">Fotos</label>
 
-                  <ReactLeafletSearch
-                  position="topright"
-                  inputPlaceholder="Buscar"
-                  className="search-map"
-                  showMarker={mapVisible}
-                  zoom={15}
-                  onChange={event => {
-                    const {lat,lng} = event.latLng
-                    setmapVisible(false)
-                    setPosition({
-                      latitude: lat,
-                      longitude: lng
-                    })
-                    setmapVisible(true)
-                  }}
-                  markerIcon={mapIconUsuario}
-                  closeResultsOnClick={true}
-                  showPopup={false}
-                  openSearchOnLoad={true}
-                  providerOptions={{region: 'br'}}
+                            <div className="images-container">
+                                {previewImages.map((image) => {
+                                    return <img key={image} src={image} alt={name} />;
+                                })}
+                                <label htmlFor="image[]" className="new-image">
+                                    <FiPlus size={24} color="#15b6d6" />
+                                </label>
+                            </div>
+                            <input multiple onChange={handleSelectImages} type="file" id="image[]" />
+                        </div>
+                    </fieldset>
 
+                    <fieldset>
+                        <legend>Visitação</legend>
 
-                // default provider OpenStreetMap
-                // provider="BingMap"
-                // providerKey="AhkdlcKxeOnNCJ1wRIPmrOXLxtEHDvuWUZhiT4GYfWgfxLthOYXs5lUMqWjQmc27"
-                />
+                        <div className="input-block">
+                            <label htmlFor="instructions">Instruções Quando Não Houver Alguém em Casa</label>
+                            <textarea id="instructions" value={instructions} onChange={(event) => setInstructions(event.target.value)} />
+                        </div>
 
-                {position.latitude != 0 && (
+                        <div className="input-block">
+                            <label htmlFor="opening_hours">Horários Disponiveis para Atendimento</label>
+                            <input id="opening_hours" value={opening_hours} onChange={(event) => setOpeningHours(event.target.value)} />
+                        </div>
 
-                  <Marker
-                    interactive={false}
-                    icon={mapIconUsuario}
-                    position={[
-                      position.latitude,
-                      position.longitude
-                    ]}
-                  />
-                )}
+                        <div className="input-block">
+                            <label htmlFor="open_on_weekends">Estou em casa fim de semana</label>
 
-              </Map>
-            </div> {/* : null
-            }*/} 
+                            <div className="button-select">
+                                <button type="button" className={open_on_weekends ? "active" : ""} onClick={() => setOpenOnWeekends(true)}>
+                                    Sim
+                                </button>
+                                <button type="button" className={!open_on_weekends ? "active" : ""} onClick={() => setOpenOnWeekends(false)}>
+                                    Não
+                                </button>
+                            </div>
+                        </div>
+                    </fieldset>
 
-                
-            <div className="input-block">
-              <label htmlFor="images">Fotos</label>
-
-              <div className="images-container">
-              {previewImages.map(image => {
-                  return (
-                    <img key={image} src={image} alt={name}/>
-                  )
-                })}
-                <label  htmlFor="image[]"className="new-image">
-                  <FiPlus size={24} color="#15b6d6" />
-                </label>
-               
-              </div>
-              <input multiple onChange={handleSelectImages} type="file" id="image[]"/>
-            </div>
-          </fieldset>
-
-          <fieldset>
-            <legend>Visitação</legend>
-
-            <div className="input-block">
-              <label htmlFor="instructions">Instruções Quando Não Houver Alguém em Casa</label>
-              <textarea
-               id="instructions" 
-               value={instructions} 
-               onChange={event => setInstructions(event.target.value)}
-               />
-            </div>
-
-
-            <div className="input-block">
-              <label htmlFor="opening_hours">Horários Disponiveis para Atendimento</label>
-              <input 
-                id="opening_hours"
-                value={opening_hours} 
-                onChange={event => setOpeningHours(event.target.value)}
-              />
-            </div>
-
-            <div className="input-block">
-              <label htmlFor="open_on_weekends">Estou em casa fim de semana</label>
-
-              <div className="button-select">
-                <button
-                 type="button"
-                className={open_on_weekends ? 'active' : ''}
-                onClick={()=>setOpenOnWeekends(true)}
-                >
-                  Sim
-                </button>
-                <button 
-                  type="button"
-                  className={!open_on_weekends ? 'active' : ''}
-                  onClick={()=>setOpenOnWeekends(false)}
-                  >
-                    Não
-                </button>
-              </div>
-            </div>
-          </fieldset>
-
-          <button className="confirm-button" type="submit">
-            Confirmar
-          </button>
-        </form>
-      </main>
-    </div>
-  );
-}
+                    <button className="confirm-button" type="submit">
+                        Confirmar
+                    </button>
+                </form>
+            </main>
+        </div>
+    );
+};
 
 export default CreateUsuario;
