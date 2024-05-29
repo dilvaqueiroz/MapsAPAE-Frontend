@@ -3,32 +3,13 @@ import { Map, Marker, TileLayer } from "react-leaflet";
 import { LeafletMouseEvent } from "leaflet";
 import { useHistory } from "react-router-dom";
 import { Alert } from "reactstrap";
-
 import { FiPlus, FiAlertCircle } from "react-icons/fi";
 import ReactLeafletSearch from "react-leaflet-search";
-
 import Sidebar from "../../components/Sidebar";
 import api from "../../services/api";
-
 import "../../styles/pages/create-usuario.css";
-import mapIconUsuario from "../../utils/mapIconUsuario";
-import mapIconColaborador from "../../utils/mapIconColaborador";
-import mapIconDoador from "../../utils/mapIconDoador";
+import { getMarkerIcon } from "../../utils/Utils";
 
-
-
-export function getMarkerIcon(type_user: string): L.Icon {
-  switch (type_user) {
-      case "usuario":
-          return mapIconUsuario;
-      case "colaborador":
-          return mapIconColaborador;
-      case "doador":
-          return mapIconDoador;
-      default:
-          return mapIconUsuario;
-  }
-}
 
 //export default function CreateUsuario(){
 const CreateUsuario: React.FC = () => {
@@ -263,7 +244,7 @@ const CreateUsuario: React.FC = () => {
                                         });
                                         setmapVisible(true);
                                     }}
-                                    markerIcon={mapIconUsuario}
+                                    markerIcon={getMarkerIcon(type_user)}
                                     closeResultsOnClick={true}
                                     showPopup={false}
                                     openSearchOnLoad={true}

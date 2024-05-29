@@ -3,16 +3,11 @@ import { Map, Marker, TileLayer } from 'react-leaflet';
 import { LeafletMouseEvent } from 'leaflet';
 import { useParams, useHistory } from 'react-router-dom';
 import { Alert } from 'reactstrap'
-
-
 import { FiPlus, FiAlertCircle } from "react-icons/fi";
-
-
 import Sidebar from "../../components/Sidebar";
 import api from "../../services/api";
-
 import '../../styles/pages/create-usuario.css';
-import { getMarkerIcon } from "./CreateUsuario";
+import { getMarkerIcon } from "../../utils/Utils";
 
 interface UsuarioParams {
   id: string;
@@ -130,16 +125,29 @@ interface UsuarioParams {
 
   // retorna as informações do endereço como também a latitude e longitude
   function getGeolocalization() {
-
     if (street) {
-      let street1 = street.split(" ").join("+")
+      let street1 = street.split(" ").join("+");
       fetch(`https://nominatim.openstreetmap.org/search?country=Brazil&city=Serra%20Talhada&street=${street1}&limit=1&format=json`)
         .then((res) => res.json())
-        .then((response) => setPosition({
-          latitude: response[0].lat,
-          longitude: response[0].lon
-        }))
-      setmapVisible(true)
+        .then((response) => {
+          if (response && response.length > 0) {
+            setPosition({
+              latitude: response[0].lat,
+              longitude: response[0].lon
+            });
+            console.log(response[0].lat);
+            console.log(response[0].lon);
+
+            setmapVisible(true);
+          } else {
+            // Trate o caso em que a resposta está vazia ou não possui dados válidos
+            console.error('Resposta vazia ou sem dados válidos');
+          }
+        })
+        .catch((error) => {
+          // Trate erros de requisição aqui
+          console.error('Erro na requisição:', error);
+        });
     }
   }
 

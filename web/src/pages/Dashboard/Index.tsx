@@ -3,12 +3,10 @@ import { Link } from 'react-router-dom';
 import { FiPlus, FiArrowRight, FiLogOut } from 'react-icons/fi';
 import { Map, TileLayer, Marker, Popup, Circle } from 'react-leaflet';
 import { useAuth } from '../../contexts/auth';
-
 import mapMakerImg from '../../images/logo.png';
-
 import '../../styles/pages/usuario-map.css';
 import api from '../../services/api';
-import { getMarkerIcon } from './CreateUsuario';
+import { getMarkerIcon } from '../../utils/Utils';
 
 interface Usuario {
     id: number;
