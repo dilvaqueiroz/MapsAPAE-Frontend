@@ -1,7 +1,7 @@
 # MapsAPAE
-Aplicativo construído para APAE-Serra Talhada, realização cadastro de endereços, mapeamento e rotas dos colaboradores, doadores e usuários da associação
+Application built for APAE-Serra Talhada, including address registration, mapping, and routing for staff, donors, and users of the association.
 
-### Tecnologias 
+### Technologies 
 
   - [Node.js](https://nodejs.org/en/)
   - [React](https://reactjs.org/)
@@ -13,9 +13,9 @@ Aplicativo construído para APAE-Serra Talhada, realização cadastro de endere�
 ![image](https://user-images.githubusercontent.com/48795370/184509299-36c55b27-b646-493a-86cf-5795cd02f590.png)
 
 
-### 🚀 Instalação
+### 🚀 Installation
 
-Para Instalar todas as dependências do projeto use:
+o install all project dependencies, use:
 
 ```sh
 $ npm i
@@ -29,15 +29,16 @@ $ npm i
 | Mapbox | [https://www.mapbox.com/] |
 | Nominatim | [https://nominatim.openstreetmap.org/] |
 
-Criar conta Mapbox, copiar o TOKEN existente na sua conta.
+Create a Mapbox account, and copy the existing TOKEN from your account.
 
-Criar um arquivo chamado .env na pasta web com a seguinte linha de código `REACT_APP_MAPBOX_TOKEN=` token que acabou de copiar.
+Create a file called .env in the web folder with the following line of code REACT_APP_MAPBOX_TOKEN= token you just copied.
 
-### Desenvolvimento
+### Development
 
-Para iniciar e contribuir com o projeto use as seguintes linhas de comando
+To start and contribute to the project, use the following command lines
 
-Para iniciar aplicativo:
+To start the application:
+
 ```sh
 $ cd web
 $ npm start
